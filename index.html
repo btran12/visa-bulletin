@@ -5,379 +5,259 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>U.S. Visa Bulletin Dashboard</title>
 <style>
-/* ── Reset & tokens ─────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --bg:        #f7f7f5;
-  --surface:   #ffffff;
-  --surface2:  #f0efe9;
-  --border:    #e2e0d8;
-  --border2:   #ccc9be;
-  --text:      #18181b;
-  --text2:     #52525b;
-  --text3:     #a1a09a;
-
-  --blue:      #2563eb;
-  --blue-lt:   #eff6ff;
-  --blue-bd:   #bfdbfe;
-  --blue-dk:   #1d4ed8;
-
-  --green:     #16a34a;
-  --green-lt:  #f0fdf4;
-  --green-bd:  #bbf7d0;
-
-  --amber:     #b45309;
-  --amber-lt:  #fffbeb;
-  --amber-bd:  #fde68a;
-
-  --red:       #dc2626;
-  --red-lt:    #fef2f2;
-  --red-bd:    #fecaca;
-
-  --purple:    #7c3aed;
-  --purple-lt: #f5f3ff;
-  --purple-bd: #ddd6fe;
-
-  --radius:    10px;
-  --radius-sm: 6px;
-  --shadow:    0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
-  --shadow-md: 0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
-
-  --font: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --bg:#f7f7f5; --surface:#ffffff; --surface2:#f0efe9; --border:#e2e0d8;
+  --border2:#ccc9be; --text:#18181b; --text2:#52525b; --text3:#a1a09a;
+  --blue:#2563eb; --blue-lt:#eff6ff; --blue-bd:#bfdbfe; --blue-dk:#1d4ed8;
+  --green:#16a34a; --green-lt:#f0fdf4; --green-bd:#bbf7d0;
+  --amber:#b45309; --amber-lt:#fffbeb; --amber-bd:#fde68a;
+  --red:#dc2626; --red-lt:#fef2f2; --red-bd:#fecaca;
+  --purple:#7c3aed; --purple-lt:#f5f3ff; --purple-bd:#ddd6fe;
+  --radius:10px; --radius-sm:6px;
+  --font:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg:       #0f0f11;
-    --surface:  #18181b;
-    --surface2: #27272a;
-    --border:   #3f3f46;
-    --border2:  #52525b;
-    --text:     #fafafa;
-    --text2:    #a1a09a;
-    --text3:    #71717a;
-    --blue:     #60a5fa;
-    --blue-lt:  #1e3a5f;
-    --blue-bd:  #1e40af;
-    --blue-dk:  #93c5fd;
-    --green:    #4ade80;
-    --green-lt: #052e16;
-    --green-bd: #14532d;
-    --amber:    #fcd34d;
-    --amber-lt: #1c1400;
-    --amber-bd: #78350f;
-    --red:      #f87171;
-    --red-lt:   #1f0909;
-    --red-bd:   #7f1d1d;
-    --purple:   #a78bfa;
-    --purple-lt:#2e1065;
-    --purple-bd:#4c1d95;
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#0f0f11; --surface:#18181b; --surface2:#27272a; --border:#3f3f46;
+    --border2:#52525b; --text:#fafafa; --text2:#a1a09a; --text3:#71717a;
+    --blue:#60a5fa; --blue-lt:#1e3a5f; --blue-bd:#1e40af; --blue-dk:#93c5fd;
+    --green:#4ade80; --green-lt:#052e16; --green-bd:#14532d;
+    --amber:#fcd34d; --amber-lt:#1c1400; --amber-bd:#78350f;
+    --red:#f87171; --red-lt:#1f0909; --red-bd:#7f1d1d;
+    --purple:#a78bfa; --purple-lt:#2e1065; --purple-bd:#4c1d95;
   }
 }
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.55;min-height:100vh;}
+.wrap{max-width:1160px;margin:0 auto;padding:0 1.25rem 4rem;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;}
+@media(max-width:800px){.grid-4{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.grid-4{grid-template-columns:1fr;}}
 
-body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.55; min-height: 100vh; }
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 0 1.25rem;gap:1rem;flex-wrap:wrap;border-bottom:1px solid var(--border);margin-bottom:1.5rem;}
+.brand{display:flex;align-items:center;gap:.75rem;}
+.brand-logo{width:40px;height:40px;border-radius:var(--radius-sm);background:var(--blue);display:flex;align-items:center;justify-content:center;}
+.brand-logo svg{width:22px;height:22px;fill:#fff;}
+.brand h1{font-size:18px;font-weight:700;letter-spacing:-.01em;}
+.brand p{font-size:12px;color:var(--text3);}
+.header-controls{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
 
-/* ── Layout ─────────────────────────────────────────────────────────────── */
-.wrap       { max-width: 1160px; margin: 0 auto; padding: 0 1.25rem 4rem; }
-.grid-2     { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.grid-3     { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
-.grid-4     { display: grid; grid-template-columns: repeat(4,1fr); gap: .75rem; }
-@media(max-width:800px) {
-  .grid-2,.grid-3,.grid-4 { grid-template-columns: 1fr 1fr; }
-}
-@media(max-width:520px) {
-  .grid-2,.grid-3,.grid-4 { grid-template-columns: 1fr; }
-}
+/* Language toggle */
+.lang-toggle{display:flex;border:1px solid var(--border2);border-radius:var(--radius-sm);overflow:hidden;}
+.lang-btn{padding:6px 14px;font-size:12px;font-weight:600;border:none;background:none;color:var(--text3);cursor:pointer;transition:all .15s;font-family:var(--font);}
+.lang-btn.active{background:var(--blue);color:#fff;}
+.lang-btn:hover:not(.active){background:var(--surface2);color:var(--text);}
 
-/* ── Header ─────────────────────────────────────────────────────────────── */
-.header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1.5rem 0 1.25rem; gap: 1rem; flex-wrap: wrap;
-  border-bottom: 1px solid var(--border); margin-bottom: 1.5rem;
-}
-.brand { display: flex; align-items: center; gap: .75rem; }
-.brand-logo {
-  width: 40px; height: 40px; border-radius: var(--radius-sm);
-  background: var(--blue); display: flex; align-items: center; justify-content: center;
-}
-.brand-logo svg { width: 22px; height: 22px; fill: #fff; }
-.brand h1 { font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
-.brand p  { font-size: 12px; color: var(--text3); }
-.header-controls { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
-select, button { font-family: var(--font); font-size: 13px; }
-select {
-  padding: 7px 12px; border: 1px solid var(--border2);
-  border-radius: var(--radius-sm); background: var(--surface);
-  color: var(--text); cursor: pointer;
-}
-.btn {
-  padding: 7px 16px; border-radius: var(--radius-sm); cursor: pointer;
-  font-weight: 500; border: 1px solid var(--border2); background: var(--surface);
-  color: var(--text); transition: all .15s; white-space: nowrap;
-  display: inline-flex; align-items: center; gap: 6px;
-}
-.btn:hover { background: var(--surface2); }
-.btn-primary { background: var(--blue); color: #fff; border-color: var(--blue-dk); }
-.btn-primary:hover { background: var(--blue-dk); }
-.btn:disabled { opacity: .45; cursor: not-allowed; }
-.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text3); }
-.dot.live { background: var(--green); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.4)} 50%{box-shadow:0 0 0 5px rgba(22,163,74,0)} }
+select,button{font-family:var(--font);font-size:13px;}
+select{padding:7px 12px;border:1px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);cursor:pointer;}
+.btn{padding:7px 16px;border-radius:var(--radius-sm);cursor:pointer;font-weight:500;border:1px solid var(--border2);background:var(--surface);color:var(--text);transition:all .15s;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;}
+.btn:hover{background:var(--surface2);}
+.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue-dk);}
+.btn-primary:hover{background:var(--blue-dk);}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--text3);}
+.dot.live{background:var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.4)}50%{box-shadow:0 0 0 5px rgba(22,163,74,0)}}
 
-/* ── Meta bar ───────────────────────────────────────────────────────────── */
-.meta-bar { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
-.chip {
-  font-size: 11px; font-weight: 500; padding: 3px 10px;
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 20px; color: var(--text2);
-}
-.chip.blue { background: var(--blue-lt); border-color: var(--blue-bd); color: var(--blue); }
+/* Meta bar */
+.meta-bar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.chip{font-size:11px;font-weight:500;padding:3px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;color:var(--text2);}
+.chip.blue{background:var(--blue-lt);border-color:var(--blue-bd);color:var(--blue);}
 
-/* ── Tabs ───────────────────────────────────────────────────────────────── */
-.tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 1.75rem; overflow-x: auto; }
-.tab {
-  padding: 9px 18px; font-size: 13px; font-weight: 500;
-  color: var(--text3); background: none; border: none;
-  border-bottom: 2px solid transparent; cursor: pointer;
-  white-space: nowrap; transition: all .15s; margin-bottom: -1px;
-}
-.tab:hover { color: var(--text); }
-.tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+/* Tabs */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:1.75rem;overflow-x:auto;}
+.tab{padding:9px 18px;font-size:13px;font-weight:500;color:var(--text3);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all .15s;margin-bottom:-1px;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue);}
 
-/* ── Section title ──────────────────────────────────────────────────────── */
-.section-title { font-size: 15px; font-weight: 600; margin-bottom: .75rem; }
-.section-sub   { font-size: 13px; color: var(--text2); margin-bottom: 1.25rem; line-height: 1.6; }
+.section-sub{font-size:13px;color:var(--text2);margin-bottom:1.25rem;line-height:1.6;}
 
-/* ── Stat cards ─────────────────────────────────────────────────────────── */
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; }
-.stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--text3); margin-bottom: .35rem; }
-.stat-value { font-size: 26px; font-weight: 700; line-height: 1; color: var(--text); }
-.stat-note  { font-size: 11px; color: var(--text3); margin-top: .35rem; }
+/* Stat cards */
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;}
+.stat-label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-bottom:.35rem;}
+.stat-value{font-size:26px;font-weight:700;line-height:1;color:var(--text);}
+.stat-note{font-size:11px;color:var(--text3);margin-top:.35rem;}
 
-/* ── Lookup card ────────────────────────────────────────────────────────── */
-.lookup-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: var(--shadow); }
-.fields-row  { display: flex; gap: .875rem; flex-wrap: wrap; }
-.field       { display: flex; flex-direction: column; gap: .35rem; min-width: 170px; flex: 1; }
-.field label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--text3); }
-.field select, .field input[type=date] {
-  padding: 8px 12px; border: 1px solid var(--border2); border-radius: var(--radius-sm);
-  background: var(--surface2); color: var(--text); font-size: 13px;
-}
-.field select:focus, .field input:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+/* Lookup */
+.lookup-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.lookup-card .section-title{font-size:15px;font-weight:600;margin-bottom:1rem;}
+.fields-row{display:flex;gap:.875rem;flex-wrap:wrap;}
+.field{display:flex;flex-direction:column;gap:.35rem;min-width:170px;flex:1;}
+.field label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);}
+.field select,.field input[type=date]{padding:8px 12px;border:1px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface2);color:var(--text);font-size:13px;}
+.result-banner{margin-top:1.25rem;border-radius:var(--radius-sm);padding:1rem 1.25rem;border:1px solid;display:flex;flex-direction:column;gap:4px;}
+.result-banner.current{background:var(--green-lt);border-color:var(--green-bd);}
+.result-banner.waiting{background:var(--amber-lt);border-color:var(--amber-bd);}
+.result-banner.unavail{background:var(--red-lt);border-color:var(--red-bd);}
+.result-banner .rhead{display:flex;align-items:center;gap:8px;}
+.result-banner .rtitle{font-size:15px;font-weight:600;}
+.result-banner .rsub{font-size:13px;color:var(--text2);}
+.result-banner .rnote{font-size:12px;margin-top:6px;padding:6px 10px;border-radius:var(--radius-sm);background:rgba(0,0,0,.04);}
+.badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:20px;border:1px solid;white-space:nowrap;}
+.badge.current{background:var(--green-lt);color:var(--green);border-color:var(--green-bd);}
+.badge.waiting{background:var(--amber-lt);color:var(--amber);border-color:var(--amber-bd);}
+.badge.unavail{background:var(--red-lt);color:var(--red);border-color:var(--red-bd);}
 
-/* Result banners */
-.result-banner {
-  margin-top: 1.25rem; border-radius: var(--radius-sm); padding: 1rem 1.25rem;
-  border: 1px solid; display: flex; flex-direction: column; gap: 4px;
-}
-.result-banner.current  { background: var(--green-lt);  border-color: var(--green-bd); }
-.result-banner.waiting  { background: var(--amber-lt);  border-color: var(--amber-bd); }
-.result-banner.unavail  { background: var(--red-lt);    border-color: var(--red-bd); }
-.result-banner .rhead   { display: flex; align-items: center; gap: 8px; }
-.result-banner .rtitle  { font-size: 15px; font-weight: 600; }
-.result-banner .rsub    { font-size: 13px; color: var(--text2); }
-.result-banner .rnote   { font-size: 12px; margin-top: 6px; padding: 6px 10px; border-radius: var(--radius-sm); background: rgba(0,0,0,.04); }
-.badge {
-  font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .06em; padding: 2px 8px; border-radius: 20px; border: 1px solid; white-space: nowrap;
-}
-.badge.current { background: var(--green-lt);  color: var(--green);  border-color: var(--green-bd); }
-.badge.waiting { background: var(--amber-lt);  color: var(--amber);  border-color: var(--amber-bd); }
-.badge.unavail { background: var(--red-lt);    color: var(--red);    border-color: var(--red-bd); }
+/* Tables */
+.table-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.table-card-header{padding:.875rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.table-card-header h3{font-size:14px;font-weight:600;}
+.subtabs{display:flex;gap:.35rem;}
+.stab{padding:4px 12px;font-size:12px;font-weight:500;border:1px solid var(--border2);border-radius:20px;background:none;color:var(--text2);cursor:pointer;transition:all .15s;}
+.stab.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+.table-scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+thead th{padding:9px 14px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);background:var(--surface2);border-bottom:1px solid var(--border);white-space:nowrap;}
+tbody td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:var(--surface2);}
+.cat{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;}
+.desc{color:var(--text2);}
+.pill{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap;border:1px solid;}
+.pill.c{background:var(--green-lt);color:var(--green);border-color:var(--green-bd);}
+.pill.u{background:var(--red-lt);color:var(--red);border-color:var(--red-bd);}
+.pill.d{background:var(--surface2);color:var(--text2);border-color:var(--border2);}
+.pill.old{background:var(--red-lt);color:var(--red);border-color:var(--red-bd);opacity:.75;}
+.pill.near{background:var(--amber-lt);color:var(--amber);border-color:var(--amber-bd);}
 
-/* ── Table card ─────────────────────────────────────────────────────────── */
-.table-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 1.5rem; box-shadow: var(--shadow); }
-.table-card-header {
-  padding: .875rem 1.25rem; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-}
-.table-card-header h3 { font-size: 14px; font-weight: 600; }
-.subtabs { display: flex; gap: .35rem; }
-.stab {
-  padding: 4px 12px; font-size: 12px; font-weight: 500;
-  border: 1px solid var(--border2); border-radius: 20px;
-  background: none; color: var(--text2); cursor: pointer; transition: all .15s;
-}
-.stab.active { background: var(--blue); color: #fff; border-color: var(--blue); }
-.table-scroll { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-thead th {
-  padding: 9px 14px; text-align: left; font-size: 11px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: .04em;
-  color: var(--text3); background: var(--surface2);
-  border-bottom: 1px solid var(--border); white-space: nowrap;
-}
-tbody td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-tbody tr:last-child td { border-bottom: none; }
-tbody tr:hover { background: var(--surface2); }
-.cat  { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; }
-.desc { color: var(--text2); }
+/* DV */
+.dv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+@media(max-width:640px){.dv-grid{grid-template-columns:1fr;}}
+.dv-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.dv-card-head{padding:.75rem 1rem;font-size:13px;font-weight:600;background:var(--surface2);border-bottom:1px solid var(--border);}
+.dv-card table{width:100%;border-collapse:collapse;font-size:12px;}
+.dv-card td{padding:8px 12px;border-bottom:1px solid var(--border);}
+.dv-card tr:last-child td{border-bottom:none;}
+.dv-region{font-weight:600;color:var(--text);}
+.dv-cutoff{font-size:14px;font-weight:700;color:var(--blue);}
+.dv-except{color:var(--text3);font-size:11px;}
+.notice{padding:.75rem 1rem;border-radius:var(--radius-sm);margin-bottom:1rem;border:1px solid;font-size:12.5px;line-height:1.6;display:flex;gap:8px;}
+.notice.info{background:var(--blue-lt);border-color:var(--blue-bd);color:var(--blue);}
+.notice.warn{background:var(--amber-lt);border-color:var(--amber-bd);color:var(--amber);}
+.notice.admin{background:var(--purple-lt);border-color:var(--purple-bd);color:var(--purple);}
+.notice svg{flex-shrink:0;margin-top:1px;}
 
-/* Pill dates */
-.pill {
-  display: inline-flex; align-items: center;
-  padding: 2px 9px; border-radius: 20px; font-size: 11px;
-  font-weight: 600; white-space: nowrap; border: 1px solid;
-}
-.pill.c    { background: var(--green-lt);  color: var(--green);  border-color: var(--green-bd); }
-.pill.u    { background: var(--red-lt);    color: var(--red);    border-color: var(--red-bd); }
-.pill.d    { background: var(--surface2);  color: var(--text2);  border-color: var(--border2); }
-.pill.old  { background: var(--red-lt);    color: var(--red);    border-color: var(--red-bd); opacity: .75; }
-.pill.near { background: var(--amber-lt);  color: var(--amber);  border-color: var(--amber-bd); }
+/* Guide */
+.guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;}
+.guide-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;border-top:3px solid var(--blue);}
+.guide-card.green{border-top-color:var(--green);}
+.guide-card.amber{border-top-color:#d97706;}
+.guide-card.red{border-top-color:var(--red);}
+.guide-card.purple{border-top-color:var(--purple);}
+.guide-card h4{font-size:13px;font-weight:700;margin-bottom:.5rem;}
+.guide-card p{font-size:13px;color:var(--text2);line-height:1.65;}
 
-/* ── DV section ─────────────────────────────────────────────────────────── */
-.dv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-@media(max-width: 640px) { .dv-grid { grid-template-columns: 1fr; } }
-.dv-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.dv-card-head { padding: .75rem 1rem; font-size: 13px; font-weight: 600; background: var(--surface2); border-bottom: 1px solid var(--border); }
-.dv-card table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.dv-card td    { padding: 8px 12px; border-bottom: 1px solid var(--border); }
-.dv-card tr:last-child td { border-bottom: none; }
-.dv-region  { font-weight: 600; color: var(--text); }
-.dv-cutoff  { font-size: 14px; font-weight: 700; color: var(--blue); }
-.dv-except  { color: var(--text3); font-size: 11px; }
-.notice {
-  padding: .75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem;
-  border: 1px solid; font-size: 12.5px; line-height: 1.6; display: flex; gap: 8px;
-}
-.notice.info   { background: var(--blue-lt);   border-color: var(--blue-bd);   color: var(--blue); }
-.notice.warn   { background: var(--amber-lt);  border-color: var(--amber-bd);  color: var(--amber); }
-.notice.admin  { background: var(--purple-lt); border-color: var(--purple-bd); color: var(--purple); }
-.notice svg    { flex-shrink: 0; margin-top: 1px; }
+/* History */
+.history-table{width:100%;border-collapse:collapse;font-size:12px;}
+.history-table th{padding:7px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--surface2);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);}
+.history-table td{padding:8px 12px;border-bottom:1px solid var(--border);}
+.history-table tr:last-child td{border-bottom:none;}
 
-/* ── Guide section ──────────────────────────────────────────────────────── */
-.guide-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
-.guide-card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 1.25rem; border-top: 3px solid var(--blue);
-}
-.guide-card.green  { border-top-color: var(--green); }
-.guide-card.amber  { border-top-color: #d97706; }
-.guide-card.red    { border-top-color: var(--red); }
-.guide-card.purple { border-top-color: var(--purple); }
-.guide-card h4 { font-size: 13px; font-weight: 700; margin-bottom: .5rem; }
-.guide-card p  { font-size: 13px; color: var(--text2); line-height: 1.65; }
+/* Loading / error */
+.loading{text-align:center;padding:4rem 1rem;}
+.spinner{width:36px;height:36px;margin:0 auto 1rem;border:3px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{color:var(--text2);font-size:14px;}
+.error-card{background:var(--red-lt);border:1px solid var(--red-bd);border-radius:var(--radius);padding:1.25rem;}
+.error-card pre{color:var(--red);font-size:13px;white-space:pre-wrap;font-family:var(--font);}
 
-/* ── Trend / history chart ──────────────────────────────────────────────── */
-.chart-wrap { position: relative; height: 240px; margin-top: 1rem; }
-
-/* ── Loading / error ────────────────────────────────────────────────────── */
-.loading { text-align: center; padding: 4rem 1rem; }
-.spinner {
-  width: 36px; height: 36px; margin: 0 auto 1rem;
-  border: 3px solid var(--border2); border-top-color: var(--blue);
-  border-radius: 50%; animation: spin .7s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading p    { color: var(--text2); font-size: 14px; }
-.error-card   { background: var(--red-lt); border: 1px solid var(--red-bd); border-radius: var(--radius); padding: 1.25rem; }
-.error-card p { color: var(--red); font-size: 14px; }
-
-/* ── Footer ─────────────────────────────────────────────────────────────── */
-.footer { border-top: 1px solid var(--border); margin-top: 3rem; padding: 1.5rem 0 .5rem; text-align: center; font-size: 11.5px; color: var(--text3); }
-.footer a { color: var(--blue); text-decoration: none; }
-
-/* ── Utilities ──────────────────────────────────────────────────────────── */
-.hidden { display: none !important; }
-.mt1 { margin-top: .75rem; }
-.mt2 { margin-top: 1.5rem; }
+/* Footer */
+.footer{border-top:1px solid var(--border);margin-top:3rem;padding:1.5rem 0 .5rem;text-align:center;font-size:11.5px;color:var(--text3);}
+.footer a{color:var(--blue);text-decoration:none;}
+.hidden{display:none!important;}
+.mt1{margin-top:.75rem;}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- ── Header ── -->
   <header class="header">
     <div class="brand">
       <div class="brand-logo">
         <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 3a7 7 0 0 1 6.33 10H5.67A7 7 0 0 1 12 5zm0 14a7 7 0 0 1-6.33-4h12.66A7 7 0 0 1 12 19z"/></svg>
       </div>
       <div>
-        <h1>Visa Bulletin Dashboard</h1>
-        <p>U.S. Department of State — Immigrant Visa Dates</p>
+        <h1 data-i18n="brand.title">Visa Bulletin Dashboard</h1>
+        <p data-i18n="brand.sub">U.S. Department of State — Immigrant Visa Dates</p>
       </div>
     </div>
     <div class="header-controls">
+      <!-- Language toggle -->
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="langEN" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="langVI" onclick="setLang('vi')">VI</button>
+      </div>
       <select id="selMonth" onchange="loadBulletin()"></select>
       <button class="btn btn-primary" id="btnRefresh" onclick="refreshBulletin()">
         <span class="dot" id="liveDot"></span>
-        <span id="btnLabel">Fetch latest</span>
+        <span id="btnLabel" data-i18n="btn.fetch">Fetch latest</span>
       </button>
     </div>
   </header>
 
-  <!-- ── Loading ── -->
   <div id="loadingState" class="loading hidden">
     <div class="spinner"></div>
-    <p id="loadingMsg">Loading...</p>
+    <p id="loadingMsg" data-i18n="status.loading">Loading...</p>
   </div>
-
-  <!-- ── Error ── -->
   <div id="errorState" class="error-card hidden">
-    <p id="errorMsg"></p>
+    <pre id="errorMsg"></pre>
   </div>
 
-  <!-- ── Dashboard ── -->
   <div id="dashboard" class="hidden">
-
-    <!-- Meta chips -->
     <div class="meta-bar" id="metaBar"></div>
-
-    <!-- Admin notices -->
     <div id="adminNotices"></div>
 
-    <!-- Tabs -->
     <nav class="tabs" id="tabNav">
-      <button class="tab active" data-tab="lookup">Personal lookup</button>
-      <button class="tab" data-tab="employment">Employment-based</button>
-      <button class="tab" data-tab="family">Family-sponsored</button>
-      <button class="tab" data-tab="dv">Diversity lottery</button>
-      <button class="tab" data-tab="history">Trend history</button>
-      <button class="tab" data-tab="guide">How it works</button>
+      <button class="tab active" data-tab="lookup"     data-i18n="tab.lookup">Personal lookup</button>
+      <button class="tab"        data-tab="employment" data-i18n="tab.employment">Employment-based</button>
+      <button class="tab"        data-tab="family"     data-i18n="tab.family">Family-sponsored</button>
+      <button class="tab"        data-tab="dv"         data-i18n="tab.dv">Diversity lottery</button>
+      <button class="tab"        data-tab="history"    data-i18n="tab.history">Trend history</button>
+      <button class="tab"        data-tab="guide"      data-i18n="tab.guide">How it works</button>
     </nav>
 
-    <!-- ── LOOKUP ── -->
+    <!-- LOOKUP -->
     <section id="tab-lookup">
       <div class="lookup-card">
-        <p class="section-title">Check your priority date</p>
+        <p class="section-title" data-i18n="lookup.title">Check your priority date</p>
         <div class="fields-row">
           <div class="field">
-            <label>Visa category</label>
+            <label data-i18n="lookup.category">Visa category</label>
             <select id="lcCat" onchange="runLookup()">
-              <optgroup label="Employment-based">
-                <option value="EB1">EB-1 — Priority workers</option>
-                <option value="EB2">EB-2 — Adv. degree / exceptional ability</option>
-                <option value="EB3">EB-3 — Skilled workers &amp; professionals</option>
-                <option value="EB3_OTHER">EB-3 — Other workers</option>
-                <option value="EB4">EB-4 — Special immigrants</option>
-                <option value="EB4_RELIGIOUS">EB-4 — Religious workers</option>
-                <option value="EB5_UNRESERVED">EB-5 — Unreserved</option>
-                <option value="EB5_RURAL">EB-5 — Rural set-aside (20%)</option>
-                <option value="EB5_HIGH_UNEMP">EB-5 — High unemployment (10%)</option>
-                <option value="EB5_INFRA">EB-5 — Infrastructure (2%)</option>
+              <optgroup data-i18n-label="optgroup.employment" label="Employment-based">
+                <option value="EB1" data-i18n="cat.EB1">EB-1 — Priority workers</option>
+                <option value="EB2" data-i18n="cat.EB2">EB-2 — Adv. degree / exceptional ability</option>
+                <option value="EB3" data-i18n="cat.EB3">EB-3 — Skilled workers &amp; professionals</option>
+                <option value="EB3_OTHER" data-i18n="cat.EB3_OTHER">EB-3 — Other workers</option>
+                <option value="EB4" data-i18n="cat.EB4">EB-4 — Special immigrants</option>
+                <option value="EB4_RELIGIOUS" data-i18n="cat.EB4_RELIGIOUS">EB-4 — Religious workers</option>
+                <option value="EB5_UNRESERVED" data-i18n="cat.EB5_UNRESERVED">EB-5 — Unreserved</option>
+                <option value="EB5_RURAL" data-i18n="cat.EB5_RURAL">EB-5 — Rural set-aside (20%)</option>
+                <option value="EB5_HIGH_UNEMP" data-i18n="cat.EB5_HIGH_UNEMP">EB-5 — High unemployment (10%)</option>
+                <option value="EB5_INFRA" data-i18n="cat.EB5_INFRA">EB-5 — Infrastructure (2%)</option>
               </optgroup>
-              <optgroup label="Family-sponsored">
-                <option value="F1">F1 — Unmarried adult children of U.S. citizens</option>
-                <option value="F2A">F2A — Spouses &amp; minor children of LPRs</option>
-                <option value="F2B">F2B — Unmarried adult children of LPRs</option>
-                <option value="F3">F3 — Married children of U.S. citizens</option>
-                <option value="F4">F4 — Siblings of adult U.S. citizens</option>
+              <optgroup data-i18n-label="optgroup.family" label="Family-sponsored">
+                <option value="F1"  data-i18n="cat.F1">F1 — Unmarried adult children of U.S. citizens</option>
+                <option value="F2A" data-i18n="cat.F2A">F2A — Spouses &amp; minor children of LPRs</option>
+                <option value="F2B" data-i18n="cat.F2B">F2B — Unmarried adult children of LPRs</option>
+                <option value="F3"  data-i18n="cat.F3">F3 — Married children of U.S. citizens</option>
+                <option value="F4"  data-i18n="cat.F4">F4 — Siblings of adult U.S. citizens</option>
               </optgroup>
             </select>
           </div>
           <div class="field">
-            <label>Country of chargeability</label>
+            <label data-i18n="lookup.country">Country of chargeability</label>
             <select id="lcCountry" onchange="runLookup()">
-              <option value="ALL_OTHER">All other countries</option>
-              <option value="CHINA">China (mainland born)</option>
-              <option value="INDIA">India</option>
-              <option value="MEXICO">Mexico</option>
-              <option value="PHILIPPINES">Philippines</option>
+              <option value="ALL_OTHER" data-i18n="country.all">All other countries</option>
+              <option value="CHINA"     data-i18n="country.china">China (mainland born)</option>
+              <option value="INDIA"     data-i18n="country.india">India</option>
+              <option value="MEXICO"    data-i18n="country.mexico">Mexico</option>
+              <option value="PHILIPPINES" data-i18n="country.philippines">Philippines</option>
             </select>
           </div>
           <div class="field">
-            <label>Your priority date</label>
+            <label data-i18n="lookup.priorityDate">Your priority date</label>
             <input type="date" id="lcDate" onchange="runLookup()"/>
           </div>
         </div>
@@ -386,19 +266,18 @@ tbody tr:hover { background: var(--surface2); }
       <div class="grid-4" id="statsStrip"></div>
     </section>
 
-    <!-- ── EMPLOYMENT ── -->
+    <!-- EMPLOYMENT -->
     <section id="tab-employment" class="hidden">
-      <p class="section-sub">
-        Final action dates: your priority date must be <strong>earlier</strong> than the date shown to receive a visa number this month.
+      <p class="section-sub" data-i18n="employment.sub">
+        Final action dates: your priority date must be earlier than the date shown to receive a visa number this month.
         "C" = Current (no wait). "U" = Unavailable.
-        Check <a href="https://www.uscis.gov/visabulletininfo" target="_blank">uscis.gov/visabulletininfo</a> to see if the filing dates chart may be used for early I-485 submissions.
       </p>
       <div class="table-card">
         <div class="table-card-header">
-          <h3>Employment-based preference categories</h3>
+          <h3 data-i18n="employment.title">Employment-based preference categories</h3>
           <div class="subtabs">
-            <button class="stab active" onclick="switchSubtab('emp','final',this)">Final action dates</button>
-            <button class="stab"        onclick="switchSubtab('emp','filing',this)">Dates for filing</button>
+            <button class="stab active" onclick="switchSubtab('emp','final',this)"  data-i18n="subtab.final">Final action dates</button>
+            <button class="stab"        onclick="switchSubtab('emp','filing',this)" data-i18n="subtab.filing">Dates for filing</button>
           </div>
         </div>
         <div class="table-scroll">
@@ -408,17 +287,17 @@ tbody tr:hover { background: var(--surface2); }
       </div>
     </section>
 
-    <!-- ── FAMILY ── -->
+    <!-- FAMILY -->
     <section id="tab-family" class="hidden">
-      <p class="section-sub">
-        Dates below reflect when visa numbers are available. Priority dates must be <strong>earlier</strong> than the cutoff date shown.
+      <p class="section-sub" data-i18n="family.sub">
+        Dates below reflect when visa numbers are available. Priority dates must be earlier than the cutoff shown.
       </p>
       <div class="table-card">
         <div class="table-card-header">
-          <h3>Family-sponsored preference categories</h3>
+          <h3 data-i18n="family.title">Family-sponsored preference categories</h3>
           <div class="subtabs">
-            <button class="stab active" onclick="switchSubtab('fam','final',this)">Final action dates</button>
-            <button class="stab"        onclick="switchSubtab('fam','filing',this)">Dates for filing</button>
+            <button class="stab active" onclick="switchSubtab('fam','final',this)"  data-i18n="subtab.final">Final action dates</button>
+            <button class="stab"        onclick="switchSubtab('fam','filing',this)" data-i18n="subtab.filing">Dates for filing</button>
           </div>
         </div>
         <div class="table-scroll">
@@ -428,50 +307,43 @@ tbody tr:hover { background: var(--surface2); }
       </div>
     </section>
 
-    <!-- ── DV ── -->
+    <!-- DV -->
     <section id="tab-dv" class="hidden">
-      <p class="section-sub">
+      <p class="section-sub" data-i18n="dv.sub">
         The Diversity Visa (DV) lottery offers ~52,000 visas annually to nationals of countries with historically low U.S. immigration.
-        Your lottery rank must be <strong>below</strong> the regional cutoff shown to receive a visa this month.
-        No single country may receive more than 7% of annual DVs.
+        Your lottery rank must be below the regional cutoff shown. No single country may receive more than 7% of annual DVs.
       </p>
       <div id="dvContent"></div>
       <div class="notice warn mt1">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
-        <span>DV-2026 entitlement expires <strong>September 30, 2026</strong>. Numbers may be exhausted before that date. Check back monthly.</span>
+        <span data-i18n="dv.warning">DV-2026 entitlement expires September 30, 2026. Numbers may be exhausted before that date.</span>
       </div>
     </section>
 
-    <!-- ── HISTORY ── -->
+    <!-- HISTORY -->
     <section id="tab-history" class="hidden">
-      <p class="section-sub">
-        Compare how cutoff dates have moved across bulletins for a selected category and country.
-        Data only available for months that have been fetched and saved locally.
+      <p class="section-sub" data-i18n="history.sub">
+        Compare how cutoff dates have moved across bulletins. Fetch more months with the scraper to see trends.
       </p>
       <div class="lookup-card">
         <div class="fields-row">
           <div class="field">
-            <label>Category</label>
+            <label data-i18n="lookup.category">Category</label>
             <select id="hCat" onchange="renderHistory()">
-              <option value="EB2">EB-2</option>
-              <option value="EB3">EB-3</option>
-              <option value="EB1">EB-1</option>
-              <option value="EB3_OTHER">EB-3 Other</option>
-              <option value="F1">F1</option>
-              <option value="F2A">F2A</option>
-              <option value="F2B">F2B</option>
-              <option value="F3">F3</option>
-              <option value="F4">F4</option>
+              <option value="EB2">EB-2</option><option value="EB3">EB-3</option>
+              <option value="EB1">EB-1</option><option value="EB3_OTHER">EB-3 Other</option>
+              <option value="F1">F1</option><option value="F2A">F2A</option>
+              <option value="F2B">F2B</option><option value="F3">F3</option><option value="F4">F4</option>
             </select>
           </div>
           <div class="field">
-            <label>Country</label>
+            <label data-i18n="lookup.country">Country</label>
             <select id="hCountry" onchange="renderHistory()">
-              <option value="ALL_OTHER">All other countries</option>
-              <option value="CHINA">China</option>
-              <option value="INDIA">India</option>
-              <option value="MEXICO">Mexico</option>
-              <option value="PHILIPPINES">Philippines</option>
+              <option value="ALL_OTHER" data-i18n="country.all">All other countries</option>
+              <option value="CHINA"     data-i18n="country.china">China (mainland born)</option>
+              <option value="INDIA"     data-i18n="country.india">India</option>
+              <option value="MEXICO"    data-i18n="country.mexico">Mexico</option>
+              <option value="PHILIPPINES" data-i18n="country.philippines">Philippines</option>
             </select>
           </div>
         </div>
@@ -479,502 +351,508 @@ tbody tr:hover { background: var(--surface2); }
       </div>
     </section>
 
-    <!-- ── GUIDE ── -->
+    <!-- GUIDE -->
     <section id="tab-guide" class="hidden">
-      <div class="guide-grid">
-        <div class="guide-card">
-          <h4>What is a priority date?</h4>
-          <p>The date USCIS received your immigrant petition — Form I-130 (family) or I-140 (employment). It locks your place in the visa queue.</p>
-        </div>
-        <div class="guide-card green">
-          <h4>"C" = Current — no wait</h4>
-          <p>When a category shows "C", all qualified applicants may proceed immediately regardless of priority date. The backlog in that category has cleared.</p>
-        </div>
-        <div class="guide-card amber">
-          <h4>Final action vs. filing dates</h4>
-          <p><strong>Final action date</strong> — when you can receive a visa/green card.<br><strong>Dates for filing</strong> — an earlier date that may let you submit paperwork first, but only when USCIS approves it at uscis.gov/visabulletininfo.</p>
-        </div>
-        <div class="guide-card red">
-          <h4>Why do India &amp; China wait so long?</h4>
-          <p>A per-country cap limits each nationality to ~7% of all visas per year (~25,620). India and China have far more applicants than their cap allows — creating decades-long backlogs for EB-2 and EB-3.</p>
-        </div>
-        <div class="guide-card purple">
-          <h4>Country of chargeability</h4>
-          <p>Visas are charged to your country of birth, not citizenship. If your spouse was born in a different country with a shorter wait, you may be able to use their birth country — this is cross-chargeability.</p>
-        </div>
-        <div class="guide-card">
-          <h4>Retrogression</h4>
-          <p>Dates can move backwards if demand spikes. Always check the latest bulletin before acting. The current bulletin notes retrogression may happen later in FY2026.</p>
-        </div>
-        <div class="guide-card green">
-          <h4>EB-5 set-asides</h4>
-          <p>EB-5 reserves 20% for rural investments, 10% for high-unemployment areas, 2% for infrastructure. These are currently "Current" for all countries including China and India.</p>
-        </div>
-        <div class="guide-card amber">
-          <h4>Annual limits (FY2026)</h4>
-          <p>Family-sponsored: 226,000 / year<br>Employment-based: 140,000+ / year<br>Per-country cap: 7% ≈ 25,620<br>Diversity visas: ~52,000 / year</p>
-        </div>
-      </div>
+      <div class="guide-grid" id="guideGrid"></div>
     </section>
 
   </div><!-- /dashboard -->
 
   <footer class="footer">
-    Data from <a href="https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin.html" target="_blank">travel.state.gov</a>
-    &bull; Parsed by <code>scraper/scrape.py</code>
-    &bull; Not legal advice — always consult an immigration attorney
+    <span data-i18n="footer.text">Data from</span>
+    <a href="https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin.html" target="_blank">travel.state.gov</a>
+    &bull; <span data-i18n="footer.disclaimer">Not legal advice — consult an immigration attorney</span>
   </footer>
 </div>
-
 <script>
+
 // ═══════════════════════════════════════════════════════════════════════════
-// State
+// Translations (EN + VI)
 // ═══════════════════════════════════════════════════════════════════════════
-// Data bundled at build time — works with file://, localhost, or any host.
-// When the scraper fetches new months, those JSON files are loaded on demand.
+const T = {
+  en: {
+    'brand.title':'Visa Bulletin Dashboard',
+    'brand.sub':'U.S. Department of State — Immigrant Visa Dates',
+    'btn.fetch':'Fetch latest','btn.fetching':'Loading…',
+    'status.loading':'Loading bulletin data…',
+    'tab.lookup':'Personal lookup','tab.employment':'Employment-based',
+    'tab.family':'Family-sponsored','tab.dv':'Diversity lottery',
+    'tab.history':'Trend history','tab.guide':'How it works',
+    'lookup.title':'Check your priority date',
+    'lookup.category':'Visa category','lookup.country':'Country of chargeability',
+    'lookup.priorityDate':'Your priority date',
+    'optgroup.employment':'Employment-based','optgroup.family':'Family-sponsored',
+    'cat.EB1':'EB-1 — Priority workers','cat.EB2':'EB-2 — Adv. degree / exceptional ability',
+    'cat.EB3':'EB-3 — Skilled workers & professionals','cat.EB3_OTHER':'EB-3 — Other workers',
+    'cat.EB4':'EB-4 — Special immigrants','cat.EB4_RELIGIOUS':'EB-4 — Religious workers',
+    'cat.EB5_UNRESERVED':'EB-5 — Unreserved','cat.EB5_RURAL':'EB-5 — Rural set-aside (20%)',
+    'cat.EB5_HIGH_UNEMP':'EB-5 — High unemployment (10%)','cat.EB5_INFRA':'EB-5 — Infrastructure (2%)',
+    'cat.F1':'F1 — Unmarried adult children of U.S. citizens',
+    'cat.F2A':'F2A — Spouses & minor children of LPRs',
+    'cat.F2B':'F2B — Unmarried adult children of LPRs',
+    'cat.F3':'F3 — Married children of U.S. citizens',
+    'cat.F4':'F4 — Siblings of adult U.S. citizens',
+    'country.all':'All other countries','country.china':'China (mainland born)',
+    'country.india':'India','country.mexico':'Mexico','country.philippines':'Philippines',
+    'employment.title':'Employment-based preference categories',
+    'employment.sub':'Final action dates: your priority date must be earlier than the date shown to receive a visa number this month. "C" = Current (no wait). "U" = Unavailable. Check uscis.gov/visabulletininfo to see if the filing dates chart may be used for early I-485 submissions.',
+    'family.title':'Family-sponsored preference categories',
+    'family.sub':'Dates below reflect when visa numbers are available. Priority dates must be earlier than the cutoff shown.',
+    'subtab.final':'Final action dates','subtab.filing':'Dates for filing',
+    'dv.sub':'The Diversity Visa (DV) lottery offers ~52,000 visas annually to nationals of countries with historically low U.S. immigration. Your lottery rank must be below the regional cutoff shown. No single country may receive more than 7% of annual DVs.',
+    'dv.warning':'DV-2026 entitlement expires September 30, 2026. Numbers may be exhausted before that date.',
+    'dv.currentLabel':(m,y)=>`${m} ${y} — current cutoffs`,
+    'dv.nextLabel':(m,y)=>`${m} ${y} — advance preview`,
+    'history.sub':'Compare how cutoff dates have moved across bulletins. Fetch more months with the scraper to see trends.',
+    'history.noData':'No history yet. Run: python scraper/scrape.py --backfill 12',
+    'history.showing':(cat,country,n)=>`Showing final action date for ${cat} — ${country} across ${n} bulletin(s).`,
+    'history.tip':'Tip: run python scraper/scrape.py --backfill 24 to populate 2 years of history.',
+    'col.category':'Category','col.description':'Description','col.bulletin':'Bulletin',
+    'col.cutoff':'Cutoff date','col.region':'Region','col.rankCutoff':'Rank cutoff',
+    'col.exceptions':'Country exceptions',
+    'stat.ebCurrent':'EB slots current','stat.ebSub':'employer categories × countries',
+    'stat.famCurrent':'Family slots current','stat.famSub':'family categories × countries',
+    'stat.famCap':'Family annual cap','stat.ebCap':'EB annual cap','stat.fy':'FY2026',
+    'result.current.badge':'Eligible this month',
+    'result.current.title':'Your priority date is before the cutoff',
+    'result.current.sub':(cat,country,cutoff)=>`Category ${cat} is current for ${country}. Cutoff: ${cutoff}.`,
+    'result.current.note':'Verify at uscis.gov/visabulletininfo whether to use the "dates for filing" chart for early I-485 submission.',
+    'result.waiting.badge':'Not yet current',
+    'result.waiting.title':'Your priority date is behind the cutoff',
+    'result.waiting.sub':(cutoff,pd)=>`Cutoff: ${cutoff}. Your date of ${pd} has not been reached.`,
+    'result.waiting.note':(mo,yr)=>`You are approximately ${mo} months (${yr} yrs) behind. Monitor the bulletin monthly.`,
+    'result.unavail.badge':'Unavailable','result.unavail.title':'No visa numbers this month',
+    'result.unavail.sub':(cat,country)=>`Category ${cat} is not issuing visas for ${country} this month.`,
+    'result.nodata':'Load a bulletin first.',
+    'pill.current':'Current','pill.unavail':'Unavailable',
+    'error.noData':(label,yr,mo,url)=>`No local data for ${label}.\n\nRun the scraper:\n  python scraper/scrape.py --year ${yr} --month ${mo}\n\nOr open the live bulletin:\n  ${url}`,
+    'footer.text':'Data from','footer.disclaimer':'Not legal advice — consult an immigration attorney',
+    'meta.scraped':'Scraped',
+    'guide':[
+      {color:'',      title:'What is a priority date?',body:'The date USCIS received your immigrant petition — Form I-130 (family) or I-140 (employment). It locks your place in the visa queue.'},
+      {color:'green', title:'"C" = Current — no wait',body:'When a category shows "C", all qualified applicants may proceed immediately regardless of priority date. The backlog has cleared.'},
+      {color:'amber', title:'Final action vs. filing dates',body:'Final action date — when you can receive a visa/green card. Dates for filing — an earlier date that may let you submit paperwork first, only when USCIS approves it at uscis.gov/visabulletininfo.'},
+      {color:'red',   title:'Why do India & China wait so long?',body:'A per-country cap limits each nationality to ~7% of all visas per year (~25,620). India and China have far more applicants than their cap — creating decade-long backlogs.'},
+      {color:'purple',title:'Country of chargeability',body:'Visas are charged to your country of birth, not citizenship. If your spouse was born in a country with a shorter wait, you may use their birth country (cross-chargeability).'},
+      {color:'',      title:'Retrogression',body:'Dates can move backwards if demand spikes. Always check the latest bulletin before acting. Retrogression may happen later in FY2026.'},
+      {color:'green', title:'EB-5 set-asides',body:'EB-5 reserves 20% for rural investments, 10% for high-unemployment areas, 2% for infrastructure. All three are currently "Current" for every country including China and India.'},
+      {color:'amber', title:'Annual limits (FY2026)',body:'Family-sponsored: 226,000/year\nEmployment-based: 140,000+/year\nPer-country cap: 7% ≈ 25,620\nDiversity visas: ~52,000/year'},
+    ],
+  },
+  vi: {
+    'brand.title':'Bảng Tin Thị Thực',
+    'brand.sub':'Bộ Ngoại Giao Hoa Kỳ — Ngày Cấp Thị Thực Nhập Cư',
+    'btn.fetch':'Tải mới nhất','btn.fetching':'Đang tải…',
+    'status.loading':'Đang tải dữ liệu bản tin…',
+    'tab.lookup':'Tra cứu cá nhân','tab.employment':'Dựa trên việc làm',
+    'tab.family':'Bảo lãnh gia đình','tab.dv':'Xổ số đa dạng',
+    'tab.history':'Lịch sử xu hướng','tab.guide':'Hướng dẫn',
+    'lookup.title':'Kiểm tra ngày ưu tiên của bạn',
+    'lookup.category':'Danh mục thị thực','lookup.country':'Quốc gia tính phí',
+    'lookup.priorityDate':'Ngày ưu tiên của bạn',
+    'optgroup.employment':'Dựa trên việc làm','optgroup.family':'Bảo lãnh gia đình',
+    'cat.EB1':'EB-1 — Lao động ưu tiên','cat.EB2':'EB-2 — Bằng cấp cao / Năng lực đặc biệt',
+    'cat.EB3':'EB-3 — Lao động lành nghề & Chuyên gia','cat.EB3_OTHER':'EB-3 — Lao động khác',
+    'cat.EB4':'EB-4 — Người nhập cư đặc biệt','cat.EB4_RELIGIOUS':'EB-4 — Lao động tôn giáo',
+    'cat.EB5_UNRESERVED':'EB-5 — Không dành riêng','cat.EB5_RURAL':'EB-5 — Nông thôn (20%)',
+    'cat.EB5_HIGH_UNEMP':'EB-5 — Thất nghiệp cao (10%)','cat.EB5_INFRA':'EB-5 — Hạ tầng (2%)',
+    'cat.F1':'F1 — Con chưa kết hôn (trên 21t) của công dân Mỹ',
+    'cat.F2A':'F2A — Vợ/chồng & con nhỏ của thường trú nhân',
+    'cat.F2B':'F2B — Con chưa kết hôn (trên 21t) của thường trú nhân',
+    'cat.F3':'F3 — Con đã kết hôn của công dân Mỹ',
+    'cat.F4':'F4 — Anh chị em của công dân Mỹ',
+    'country.all':'Tất cả các quốc gia khác','country.china':'Trung Quốc (sinh ở đại lục)',
+    'country.india':'Ấn Độ','country.mexico':'Mexico','country.philippines':'Philippines',
+    'employment.title':'Danh mục ưu tiên dựa trên việc làm',
+    'employment.sub':'Ngày hành động cuối cùng: ngày ưu tiên của bạn phải sớm hơn ngày hiển thị để nhận số thị thực trong tháng này. "C" = Hiện tại (không cần chờ). "U" = Không có sẵn. Kiểm tra uscis.gov/visabulletininfo.',
+    'family.title':'Danh mục ưu tiên bảo lãnh gia đình',
+    'family.sub':'Ngày dưới đây phản ánh thời điểm có số thị thực. Ngày ưu tiên phải sớm hơn ngày giới hạn.',
+    'subtab.final':'Ngày hành động cuối cùng','subtab.filing':'Ngày nộp hồ sơ',
+    'dv.sub':'Xổ số Thị thực Đa dạng (DV) cung cấp ~52.000 thị thực mỗi năm cho công dân các quốc gia có tỷ lệ nhập cư thấp vào Mỹ. Số thứ hạng của bạn phải thấp hơn ngưỡng khu vực. Không quốc gia nào được nhận hơn 7% tổng số DV.',
+    'dv.warning':'Quyền hưởng DV-2026 hết hạn ngày 30/9/2026. Số thị thực có thể cạn kiệt trước ngày đó.',
+    'dv.currentLabel':(m,y)=>`${m} ${y} — ngưỡng hiện tại`,
+    'dv.nextLabel':(m,y)=>`${m} ${y} — xem trước tháng sau`,
+    'history.sub':'So sánh sự thay đổi ngày giới hạn qua các bản tin. Tải thêm tháng bằng trình thu thập dữ liệu.',
+    'history.noData':'Chưa có dữ liệu lịch sử. Chạy: python scraper/scrape.py --backfill 12',
+    'history.showing':(cat,country,n)=>`Ngày hành động cuối cùng cho ${cat} — ${country} qua ${n} bản tin.`,
+    'history.tip':'Mẹo: chạy python scraper/scrape.py --backfill 24 để xem lịch sử 2 năm.',
+    'col.category':'Danh mục','col.description':'Mô tả','col.bulletin':'Bản tin',
+    'col.cutoff':'Ngày giới hạn','col.region':'Khu vực','col.rankCutoff':'Ngưỡng thứ hạng',
+    'col.exceptions':'Ngoại lệ theo quốc gia',
+    'stat.ebCurrent':'Suất EB hiện tại','stat.ebSub':'danh mục việc làm × quốc gia',
+    'stat.famCurrent':'Suất gia đình hiện tại','stat.famSub':'danh mục gia đình × quốc gia',
+    'stat.famCap':'Hạn ngạch gia đình hàng năm','stat.ebCap':'Hạn ngạch EB hàng năm','stat.fy':'Năm TC 2026',
+    'result.current.badge':'Đủ điều kiện tháng này',
+    'result.current.title':'Ngày ưu tiên của bạn trước ngày giới hạn',
+    'result.current.sub':(cat,country,cutoff)=>`Danh mục ${cat} hiện tại cho ${country}. Ngày giới hạn: ${cutoff}.`,
+    'result.current.note':'Kiểm tra uscis.gov/visabulletininfo xem có thể dùng biểu đồ ngày nộp để nộp I-485 sớm không.',
+    'result.waiting.badge':'Chưa đến lượt',
+    'result.waiting.title':'Ngày ưu tiên của bạn chưa đến giới hạn',
+    'result.waiting.sub':(cutoff,pd)=>`Ngày giới hạn: ${cutoff}. Ngày của bạn ${pd} chưa được xét.`,
+    'result.waiting.note':(mo,yr)=>`Bạn còn khoảng ${mo} tháng (${yr} năm) so với ngày giới hạn hiện tại. Theo dõi bản tin hàng tháng.`,
+    'result.unavail.badge':'Không có sẵn','result.unavail.title':'Không có số thị thực tháng này',
+    'result.unavail.sub':(cat,country)=>`Danh mục ${cat} không cấp thị thực cho ${country} tháng này.`,
+    'result.nodata':'Vui lòng tải bản tin trước.',
+    'pill.current':'Hiện tại','pill.unavail':'Không có',
+    'error.noData':(label,yr,mo,url)=>`Không có dữ liệu cho ${label}.\n\nChạy trình thu thập:\n  python scraper/scrape.py --year ${yr} --month ${mo}\n\nHoặc mở bản tin trực tiếp:\n  ${url}`,
+    'footer.text':'Dữ liệu từ','footer.disclaimer':'Không phải tư vấn pháp lý — hãy tham khảo luật sư nhập cư',
+    'meta.scraped':'Đã thu thập',
+    'guide':[
+      {color:'',      title:'Ngày ưu tiên là gì?',body:'Là ngày USCIS nhận đơn thỉnh cầu nhập cư — Mẫu I-130 (gia đình) hoặc I-140 (việc làm). Nó xác định vị trí của bạn trong hàng đợi thị thực.'},
+      {color:'green', title:'"C" = Hiện tại — không cần chờ',body:'Khi danh mục hiển thị "C", tất cả người nộp đơn đủ điều kiện có thể tiến hành ngay bất kể ngày ưu tiên. Hàng đợi đã được giải quyết.'},
+      {color:'amber', title:'Ngày hành động cuối cùng vs. ngày nộp',body:'Ngày hành động cuối cùng — khi bạn nhận được thị thực/thẻ xanh. Ngày nộp hồ sơ — ngày sớm hơn có thể cho phép nộp giấy tờ trước, chỉ khi USCIS phê duyệt tại uscis.gov/visabulletininfo.'},
+      {color:'red',   title:'Tại sao Ấn Độ & Trung Quốc chờ lâu?',body:'Hạn ngạch theo quốc gia giới hạn mỗi quốc tịch ~7% tổng số thị thực mỗi năm (~25.620). Ấn Độ và Trung Quốc có quá nhiều người xin so với hạn ngạch — tạo ra hàng đợi hàng chục năm.'},
+      {color:'purple',title:'Quốc gia tính phí',body:'Thị thực được tính theo quốc gia sinh, không phải quốc tịch. Nếu vợ/chồng sinh ở quốc gia có hàng đợi ngắn hơn, bạn có thể dùng quốc gia đó (tính phí chéo).'},
+      {color:'',      title:'Thoái lui (Retrogression)',body:'Ngày có thể lùi lại nếu nhu cầu tăng đột biến. Luôn kiểm tra bản tin mới nhất trước khi hành động.'},
+      {color:'green', title:'Suất dành riêng EB-5',body:'EB-5 dành 20% cho nông thôn, 10% cho thất nghiệp cao, 2% cho hạ tầng. Cả ba đang "Hiện tại" cho mọi quốc gia kể cả Trung Quốc và Ấn Độ.'},
+      {color:'amber', title:'Hạn ngạch hàng năm (NTC 2026)',body:'Bảo lãnh gia đình: 226.000/năm\nDựa trên việc làm: 140.000+/năm\nHạn ngạch theo quốc gia: 7% ≈ 25.620\nThị thực đa dạng: ~52.000/năm'},
+    ],
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════════════════
+// i18n engine
+// ═══════════════════════════════════════════════════════════════════════════
+let lang = localStorage.getItem('vb_lang') || 'en';
+
+function t(key, ...args) {
+  const val = T[lang][key] ?? T['en'][key] ?? key;
+  return typeof val === 'function' ? val(...args) : val;
+}
+
+function setLang(l) {
+  lang = l;
+  localStorage.setItem('vb_lang', l);
+  document.getElementById('langEN').classList.toggle('active', l === 'en');
+  document.getElementById('langVI').classList.toggle('active', l === 'vi');
+  applyTranslations();
+  if (currentData) render();
+}
+
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const val = T[lang][el.dataset.i18n] ?? T['en'][el.dataset.i18n];
+    if (val && typeof val === 'string') el.textContent = val;
+  });
+  document.querySelectorAll('[data-i18n-label]').forEach(el => {
+    const val = T[lang][el.dataset.i18nLabel] ?? T['en'][el.dataset.i18nLabel];
+    if (val) el.label = val;
+  });
+  // Update month selector labels
+  document.querySelectorAll('#selMonth option').forEach(opt => {
+    if (opt.dataset.month) opt.textContent = monthLabel(+opt.dataset.month, +opt.dataset.year);
+  });
+  renderGuide();
+}
+
+function renderGuide() {
+  const guides = T[lang]['guide'] || T['en']['guide'];
+  const el = document.getElementById('guideGrid');
+  if (el) el.innerHTML = guides.map(g =>
+    `<div class="guide-card ${g.color}"><h4>${g.title}</h4><p>${g.body.replace(/\n/g,'<br>')}</p></div>`
+  ).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Data & URL helpers
+// ═══════════════════════════════════════════════════════════════════════════
 const SEEDED_DATA = {"2026-03":{"meta":{"title":"Visa Bulletin For March 2026","month":"March","month_num":3,"year":2026,"volume":"XI","number":"12","published":"February 4, 2026","url":"https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin/2026/visa-bulletin-for-march-2026.html","scraped_at":"2026-03-14T00:00:00Z"},"employment_final":{"EB1":{"ALL_OTHER":"C","CHINA":"2023-03-01","INDIA":"2023-03-01","MEXICO":"C","PHILIPPINES":"C"},"EB2":{"ALL_OTHER":"2024-10-15","CHINA":"2021-09-01","INDIA":"2013-09-15","MEXICO":"2024-10-15","PHILIPPINES":"2024-10-15"},"EB3":{"ALL_OTHER":"2023-10-01","CHINA":"2021-05-01","INDIA":"2013-11-15","MEXICO":"2023-10-01","PHILIPPINES":"2023-08-01"},"EB3_OTHER":{"ALL_OTHER":"2021-11-01","CHINA":"2018-12-08","INDIA":"2013-11-15","MEXICO":"2021-11-01","PHILIPPINES":"2021-11-01"},"EB4":{"ALL_OTHER":"2021-07-15","CHINA":"2021-07-15","INDIA":"2021-07-15","MEXICO":"2021-07-15","PHILIPPINES":"2021-07-15"},"EB4_RELIGIOUS":{"ALL_OTHER":"2021-07-15","CHINA":"2021-07-15","INDIA":"2021-07-15","MEXICO":"2021-07-15","PHILIPPINES":"2021-07-15"},"EB5_UNRESERVED":{"ALL_OTHER":"C","CHINA":"2016-08-15","INDIA":"2022-05-01","MEXICO":"C","PHILIPPINES":"C"},"EB5_RURAL":{"ALL_OTHER":"C","CHINA":"C","INDIA":"C","MEXICO":"C","PHILIPPINES":"C"},"EB5_HIGH_UNEMP":{"ALL_OTHER":"C","CHINA":"C","INDIA":"C","MEXICO":"C","PHILIPPINES":"C"},"EB5_INFRA":{"ALL_OTHER":"C","CHINA":"C","INDIA":"C","MEXICO":"C","PHILIPPINES":"C"}},"employment_filing":{"EB1":{"ALL_OTHER":"C","CHINA":"2023-12-01","INDIA":"2023-12-01","MEXICO":"C","PHILIPPINES":"C"},"EB2":{"ALL_OTHER":"C","CHINA":"2022-01-01","INDIA":"2014-11-01","MEXICO":"C","PHILIPPINES":"C"},"EB3":{"ALL_OTHER":"2024-01-15","CHINA":"2022-01-01","INDIA":"2014-08-15","MEXICO":"2024-01-15","PHILIPPINES":"2024-01-01"},"EB3_OTHER":{"ALL_OTHER":"2022-06-22","CHINA":"2019-10-01","INDIA":"2014-08-15","MEXICO":"2022-06-22","PHILIPPINES":"2022-06-22"},"EB4":{"ALL_OTHER":"2023-01-01","CHINA":"2023-01-01","INDIA":"2023-01-01","MEXICO":"2023-01-01","PHILIPPINES":"2023-01-01"},"EB4_RELIGIOUS":{"ALL_OTHER":"2023-01-01","CHINA":"2023-01-01","INDIA":"2023-01-01","MEXICO":"2023-01-01","PHILIPPINES":"2023-01-01"},"EB5_UNRESERVED":{"ALL_OTHER":"C","CHINA":"2016-10-01","INDIA":"2024-05-01","MEXICO":"C","PHILIPPINES":"C"},"EB5_RURAL":{"ALL_OTHER":"C","CHINA":"C","INDIA":"C","MEXICO":"C","PHILIPPINES":"C"},"EB5_HIGH_UNEMP":{"ALL_OTHER":"C","CHINA":"C","INDIA":"C","MEXICO":"C","PHILIPPINES":"C"},"EB5_INFRA":{"ALL_OTHER":"C","CHINA":"C","INDIA":"C","MEXICO":"C","PHILIPPINES":"C"}},"family_final":{"F1":{"ALL_OTHER":"2016-11-08","CHINA":"2016-11-08","INDIA":"2016-11-08","MEXICO":"2006-12-22","PHILIPPINES":"2013-03-01"},"F2A":{"ALL_OTHER":"2024-02-01","CHINA":"2024-02-01","INDIA":"2024-02-01","MEXICO":"2023-02-01","PHILIPPINES":"2024-02-01"},"F2B":{"ALL_OTHER":"2016-12-01","CHINA":"2016-12-01","INDIA":"2016-12-01","MEXICO":"2009-02-15","PHILIPPINES":"2012-12-22"},"F3":{"ALL_OTHER":"2011-09-08","CHINA":"2011-09-08","INDIA":"2011-09-08","MEXICO":"2001-05-01","PHILIPPINES":"2005-03-01"},"F4":{"ALL_OTHER":"2008-01-08","CHINA":"2008-01-08","INDIA":"2006-11-01","MEXICO":"2001-04-08","PHILIPPINES":"2006-09-01"}},"family_filing":{"F1":{"ALL_OTHER":"2017-09-01","CHINA":"2017-09-01","INDIA":"2017-09-01","MEXICO":"2007-12-01","PHILIPPINES":"2015-04-22"},"F2A":{"ALL_OTHER":"2026-02-22","CHINA":"2026-02-22","INDIA":"2026-02-22","MEXICO":"2026-02-22","PHILIPPINES":"2026-02-22"},"F2B":{"ALL_OTHER":"2017-03-15","CHINA":"2017-03-15","INDIA":"2017-03-15","MEXICO":"2010-02-15","PHILIPPINES":"2013-10-01"},"F3":{"ALL_OTHER":"2012-07-22","CHINA":"2012-07-22","INDIA":"2012-07-22","MEXICO":"2001-07-01","PHILIPPINES":"2006-06-01"},"F4":{"ALL_OTHER":"2009-03-01","CHINA":"2009-03-01","INDIA":"2006-12-15","MEXICO":"2001-04-30","PHILIPPINES":"2008-01-15"}},"dv_current":{"AFRICA":{"cutoff":45000,"exceptions":{"Algeria":37000,"Egypt":22250}},"ASIA":{"cutoff":30000,"exceptions":{"Nepal":6500}},"EUROPE":{"cutoff":11000,"exceptions":{}},"NORTH_AMERICA":{"cutoff":30,"exceptions":{}},"OCEANIA":{"cutoff":1200,"exceptions":{}},"SOUTH_AMERICA":{"cutoff":2100,"exceptions":{}}},"dv_next":{"AFRICA":{"cutoff":55000,"exceptions":{"Algeria":37000,"Egypt":30000}},"ASIA":{"cutoff":35000,"exceptions":{"Nepal":10000}},"EUROPE":{"cutoff":20000,"exceptions":{}},"NORTH_AMERICA":{"cutoff":50,"exceptions":{}},"OCEANIA":{"cutoff":1500,"exceptions":{}},"SOUTH_AMERICA":{"cutoff":3000,"exceptions":{}}},"admin_notices":["D. Availability of Family-Sponsored and Employment-Based Visas: Immigrant visa issuance rates for aliens from certain countries have decreased due to various administration actions to protect national security. Dates for filing and final action dates have been advanced across various immigrant visa categories. Retrogression may be necessary later in FY2026.","E. Extension of the Employment Fourth Religious Workers (SR) Category: H.R. 7148, signed February 3, 2026, extends the SR category until September 30, 2026.","F. U.S. Government Employee Special Immigrant Visas (SIVs): The NDAA for FY2024 may affect current and former U.S. Government employees abroad applying for SIVs or adjustment of status."]}};
 
 let currentData = null;
-let allData = Object.assign({}, SEEDED_DATA);  // pre-populated with bundled data
+let allData = Object.assign({}, SEEDED_DATA);
 
-// ── URL pattern helpers ────────────────────────────────────────────────────
-// The State Dept bulletin URL is entirely predictable — only year and the
-// lowercase month name change:
-//
-//   https://travel.state.gov/.../visa-bulletin/{YEAR}/visa-bulletin-for-{month}-{YEAR}.html
-//
-// e.g. March 2026  ->  .../visa-bulletin/2026/visa-bulletin-for-march-2026.html
-//      April 2025  ->  .../visa-bulletin/2025/visa-bulletin-for-april-2025.html
-//
-// Local data files follow the same logic:  data/{YEAR}-{MM}.json
-// No manifest file is required.
+const MONTH_NAMES  = ['january','february','march','april','may','june','july','august','september','october','november','december'];
+const MONTH_LABELS_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTH_LABELS_VI = ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'];
 
-const MONTH_NAMES  = ['january','february','march','april','may','june',
-                      'july','august','september','october','november','december'];
-const MONTH_LABELS = ['January','February','March','April','May','June',
-                      'July','August','September','October','November','December'];
+const COUNTRY_KEYS      = ['ALL_OTHER','CHINA','INDIA','MEXICO','PHILIPPINES'];
+const COUNTRY_LABELS_EN = ['All other','China','India','Mexico','Philippines'];
+const COUNTRY_LABELS_VI = ['Tất cả','Trung Quốc','Ấn Độ','Mexico','Philippines'];
 
-/** Compute the canonical data filename for any year + month. */
-function dataFile(year, month) {
-  return `${year}-${String(month).padStart(2,'0')}.json`;
+const EMP_META_EN = {EB1:'Priority workers',EB2:'Adv. degree / exceptional ability',EB3:'Skilled workers & professionals',EB3_OTHER:'Other workers',EB4:'Special immigrants',EB4_RELIGIOUS:'Certain religious workers',EB5_UNRESERVED:'Investment — unreserved',EB5_RURAL:'Investment — rural (20%)',EB5_HIGH_UNEMP:'Investment — high unemployment (10%)',EB5_INFRA:'Investment — infrastructure (2%)'};
+const EMP_META_VI = {EB1:'Lao động ưu tiên',EB2:'Bằng cấp cao / Năng lực đặc biệt',EB3:'Lao động lành nghề & Chuyên gia',EB3_OTHER:'Lao động khác',EB4:'Người nhập cư đặc biệt',EB4_RELIGIOUS:'Lao động tôn giáo',EB5_UNRESERVED:'Đầu tư — không dành riêng',EB5_RURAL:'Đầu tư — nông thôn (20%)',EB5_HIGH_UNEMP:'Đầu tư — thất nghiệp cao (10%)',EB5_INFRA:'Đầu tư — hạ tầng (2%)'};
+const FAM_META_EN = {F1:'Unmarried adult children of U.S. citizens',F2A:'Spouses & minor children of LPRs',F2B:'Unmarried adult children of LPRs',F3:'Married children of U.S. citizens',F4:'Siblings of adult U.S. citizens'};
+const FAM_META_VI = {F1:'Con chưa kết hôn (>21t) của công dân Mỹ',F2A:'Vợ/chồng & con nhỏ của thường trú nhân',F2B:'Con chưa kết hôn (>21t) của thường trú nhân',F3:'Con đã kết hôn của công dân Mỹ',F4:'Anh chị em của công dân Mỹ'};
+
+function empMeta()       { return lang==='vi' ? EMP_META_VI : EMP_META_EN; }
+function famMeta()       { return lang==='vi' ? FAM_META_VI : FAM_META_EN; }
+function countryLabels() { return lang==='vi' ? COUNTRY_LABELS_VI : COUNTRY_LABELS_EN; }
+function monthLabel(m, y) {
+  return lang==='vi' ? `${MONTH_LABELS_VI[m-1]} ${y}` : `${MONTH_LABELS_EN[m-1]} ${y}`;
 }
 
-/** The exact State Dept URL for any bulletin - purely from year & month. */
+function dataFile(year, month) { return `${year}-${String(month).padStart(2,'0')}.json`; }
 function bulletinUrl(year, month) {
   return 'https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin'
        + `/${year}/visa-bulletin-for-${MONTH_NAMES[month-1]}-${year}.html`;
 }
-
-/**
- * Generate the list of selectable months (newest first).
- * Bulletins are published ~5 weeks ahead, so we offer next month once
- * we're past the 8th of the current month.
- */
-function generateMonthOptions(count = 24) {
-  // Start from the current calendar month and go back.
-  // We do NOT speculatively advance to next month here — the scraper
-  // is responsible for fetching ahead; the UI just shows what exists.
-  const now  = new Date();
-  let year   = now.getFullYear();
-  let month  = now.getMonth() + 1; // 1-based
-
-  const options = [];
-  for (let i = 0; i < count; i++) {
-    options.push({
-      year, month,
-      label: `${MONTH_LABELS[month-1]} ${year}`,
-      file:  dataFile(year, month),
-      url:   bulletinUrl(year, month),
-    });
-    month -= 1;
-    if (month === 0) { month = 12; year -= 1; }
+function generateMonthOptions(count=24) {
+  const now = new Date();
+  let year=now.getFullYear(), month=now.getMonth()+1;
+  const opts=[];
+  for(let i=0;i<count;i++){
+    opts.push({year,month,file:dataFile(year,month),url:bulletinUrl(year,month)});
+    if(--month===0){month=12;year--;}
   }
-  return options;
+  return opts;
 }
-
-const COUNTRY_KEYS   = ['ALL_OTHER','CHINA','INDIA','MEXICO','PHILIPPINES'];
-const COUNTRY_LABELS = ['All other','China','India','Mexico','Philippines'];
-
-const EMP_META = {
-  EB1:          'Priority workers',
-  EB2:          'Advanced degree / exceptional ability',
-  EB3:          'Skilled workers & professionals',
-  EB3_OTHER:    'Other workers',
-  EB4:          'Special immigrants (incl. religious)',
-  EB4_RELIGIOUS:'Certain religious workers',
-  EB5_UNRESERVED:'Investment — unreserved (C5, T5, I5, R5)',
-  EB5_RURAL:    'Investment — rural set-aside (20%)',
-  EB5_HIGH_UNEMP:'Investment — high unemployment (10%)',
-  EB5_INFRA:    'Investment — infrastructure (2%)',
-};
-const FAM_META = {
-  F1:  'Unmarried adult children of U.S. citizens',
-  F2A: 'Spouses & minor children of LPRs',
-  F2B: 'Unmarried adult children of LPRs',
-  F3:  'Married children of U.S. citizens',
-  F4:  'Siblings of adult U.S. citizens',
-};
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Boot
 // ═══════════════════════════════════════════════════════════════════════════
-window.addEventListener('DOMContentLoaded', async () => {
-  // Default priority date = 4 years ago
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById(lang==='vi'?'langVI':'langEN').classList.add('active');
+  document.getElementById(lang==='vi'?'langEN':'langVI').classList.remove('active');
+
   const d = new Date(); d.setFullYear(d.getFullYear()-4);
   document.getElementById('lcDate').value = d.toISOString().slice(0,10);
 
-  // Tab switching
   document.getElementById('tabNav').addEventListener('click', e => {
     const btn = e.target.closest('.tab');
     if (!btn) return;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('[id^="tab-"]').forEach(s => s.classList.add('hidden'));
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('[id^="tab-"]').forEach(s=>s.classList.add('hidden'));
     btn.classList.add('active');
-    document.getElementById('tab-' + btn.dataset.tab).classList.remove('hidden');
-    if (btn.dataset.tab === 'history') renderHistory();
+    document.getElementById('tab-'+btn.dataset.tab).classList.remove('hidden');
+    if (btn.dataset.tab==='history') renderHistory();
   });
 
   buildMonthSelector();
+  applyTranslations();
   loadBulletin();
 });
 
-// =============================================================================
-// Month selector (no manifest needed - URL pattern is fully deterministic)
-// =============================================================================
+// ═══════════════════════════════════════════════════════════════════════════
+// Month selector
+// ═══════════════════════════════════════════════════════════════════════════
 function buildMonthSelector() {
   const sel  = document.getElementById('selMonth');
   const opts = generateMonthOptions(24);
-  sel.innerHTML = '';
-
-  // Show months that are already in allData (bundled or previously fetched).
-  // Also always show the current month even if not yet downloaded, so the
-  // user can trigger a fetch for it.
-  const available = new Set(Object.keys(allData).map(k => k + '.json'));
+  const available = new Set(Object.keys(allData).map(k=>k+'.json'));
   const now = new Date();
-  const currentFile = dataFile(now.getFullYear(), now.getMonth() + 1);
-  available.add(currentFile);
-
+  available.add(dataFile(now.getFullYear(), now.getMonth()+1));
+  sel.innerHTML = '';
   for (const o of opts) {
     if (!available.has(o.file)) continue;
     const el = document.createElement('option');
-    el.value         = o.file;
-    el.dataset.year  = o.year;
-    el.dataset.month = o.month;
-    el.dataset.url   = o.url;
-    el.textContent   = o.label;
+    el.value=o.file; el.dataset.year=o.year; el.dataset.month=o.month;
+    el.textContent=monthLabel(o.month,o.year);
     sel.appendChild(el);
   }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Load a bulletin JSON file
+// Load bulletin
 // ═══════════════════════════════════════════════════════════════════════════
 async function loadBulletin() {
-  const sel  = document.getElementById('selMonth');
-  const file = sel.value;
+  const file = document.getElementById('selMonth').value;
   if (!file) return;
-
-  // Cache hit
-  if (allData[file]) { currentData = allData[file]; render(); return; }
-
-  showLoading('Loading bulletin data...');
+  const key = file.replace('.json','');
+  if (allData[key]) { currentData=allData[key]; render(); return; }
+  showLoading(t('status.loading'));
   try {
-    const r = await fetch('data/' + file);
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const r = await fetch('data/'+file);
+    if (!r.ok) throw new Error('HTTP '+r.status);
     const data = await r.json();
-    allData[file] = data;
-    currentData   = data;
-    render();
+    allData[key]=data; currentData=data; render();
   } catch(e) {
-    // Derive year/month from the filename ("2026-03.json")
-    const [yr, mo] = file.replace('.json','').split('-').map(Number);
-    const liveUrl  = bulletinUrl(yr, mo);
-    showError(
-      `No local data for ${MONTH_LABELS[mo-1]} ${yr}.\n\n` +
-      `Run the scraper to fetch it:\n  python scraper/scrape.py --year ${yr} --month ${mo}\n\n` +
-      `Or open the live bulletin directly:\n  ${liveUrl}`
-    );
+    const [yr,mo]=file.replace('.json','').split('-').map(Number);
+    showError(t('error.noData',monthLabel(mo,yr),yr,mo,bulletinUrl(yr,mo)));
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// Refresh (trigger scraper notice — we can't exec Python from the browser)
-// ═══════════════════════════════════════════════════════════════════════════
 function refreshBulletin() {
-  const btn = document.getElementById('btnRefresh');
-  btn.disabled = true;
-  document.getElementById('btnLabel').textContent = 'Loading…';
-  // Reload from disk (picks up any changes the scraper wrote)
-  const file = document.getElementById('selMonth').value;
-  delete allData[file];
-  loadBulletin().finally(() => {
-    btn.disabled = false;
-    document.getElementById('btnLabel').textContent = 'Fetch latest';
-  });
+  const btn=document.getElementById('btnRefresh');
+  btn.disabled=true;
+  document.getElementById('btnLabel').textContent=t('btn.fetching');
+  const key=document.getElementById('selMonth').value.replace('.json','');
+  delete allData[key];
+  loadBulletin().finally(()=>{btn.disabled=false;document.getElementById('btnLabel').textContent=t('btn.fetch');});
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Render everything
+// Render
 // ═══════════════════════════════════════════════════════════════════════════
 function render() {
   if (!currentData) return;
   hideLoading();
   document.getElementById('dashboard').classList.remove('hidden');
+  const d=currentData, m=d.meta;
 
-  const d = currentData;
-  const m = d.meta;
+  document.getElementById('metaBar').innerHTML=`
+    <span class="chip blue">${monthLabel(m.month_num,m.year)}</span>
+    <span class="chip">Vol. ${m.volume}, No. ${m.number}</span>
+    <span class="chip">${m.published}</span>
+    <span class="chip">${t('meta.scraped')} ${(m.scraped_at||'').slice(0,10)}</span>`;
+  document.getElementById('liveDot').className='dot live';
 
-  // Meta bar
-  document.getElementById('metaBar').innerHTML = `
-    <span class="chip blue">${m.month} ${m.year}</span>
-    <span class="chip">Volume ${m.volume}, No. ${m.number}</span>
-    <span class="chip">Published ${m.published}</span>
-    <span class="chip">Scraped ${m.scraped_at ? m.scraped_at.slice(0,10) : '—'}</span>
-  `;
-  document.getElementById('liveDot').className = 'dot live';
-
-  // Admin notices
-  const noticeEl = document.getElementById('adminNotices');
-  noticeEl.innerHTML = (d.admin_notices || []).map(n =>
+  document.getElementById('adminNotices').innerHTML=(d.admin_notices||[]).map(n=>
     `<div class="notice admin"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg><span>${n}</span></div>`
   ).join('');
 
-  // Stats strip
-  const ec = countCurrent(d.employment_final);
-  const fc = countCurrent(d.family_final);
-  document.getElementById('statsStrip').innerHTML = `
-    <div class="stat-card"><div class="stat-label">EB slots current</div><div class="stat-value">${ec.cur}/${ec.tot}</div><div class="stat-note">employer categories × countries</div></div>
-    <div class="stat-card"><div class="stat-label">Family slots current</div><div class="stat-value">${fc.cur}/${fc.tot}</div><div class="stat-note">family categories × countries</div></div>
-    <div class="stat-card"><div class="stat-label">Family annual cap</div><div class="stat-value">226K</div><div class="stat-note">FY2026</div></div>
-    <div class="stat-card"><div class="stat-label">EB annual cap</div><div class="stat-value">140K+</div><div class="stat-note">FY2026</div></div>
-  `;
+  const ec=countCurrent(d.employment_final), fc=countCurrent(d.family_final);
+  document.getElementById('statsStrip').innerHTML=`
+    <div class="stat-card"><div class="stat-label">${t('stat.ebCurrent')}</div><div class="stat-value">${ec.cur}/${ec.tot}</div><div class="stat-note">${t('stat.ebSub')}</div></div>
+    <div class="stat-card"><div class="stat-label">${t('stat.famCurrent')}</div><div class="stat-value">${fc.cur}/${fc.tot}</div><div class="stat-note">${t('stat.famSub')}</div></div>
+    <div class="stat-card"><div class="stat-label">${t('stat.famCap')}</div><div class="stat-value">226K</div><div class="stat-note">${t('stat.fy')}</div></div>
+    <div class="stat-card"><div class="stat-label">${t('stat.ebCap')}</div><div class="stat-value">140K+</div><div class="stat-note">${t('stat.fy')}</div></div>`;
 
-  // Employment tables
-  document.getElementById('emp-final').innerHTML  = buildTable(d.employment_final, EMP_META);
-  document.getElementById('emp-filing').innerHTML = buildTable(d.employment_filing || d.employment_final, EMP_META);
+  document.getElementById('emp-final').innerHTML =buildTable(d.employment_final,empMeta());
+  document.getElementById('emp-filing').innerHTML=buildTable(d.employment_filing||d.employment_final,empMeta());
+  document.getElementById('fam-final').innerHTML =buildTable(d.family_final,famMeta());
+  document.getElementById('fam-filing').innerHTML=buildTable(d.family_filing||d.family_final,famMeta());
+  document.getElementById('dvContent').innerHTML =buildDV(d);
 
-  // Family tables
-  document.getElementById('fam-final').innerHTML  = buildTable(d.family_final, FAM_META);
-  document.getElementById('fam-filing').innerHTML = buildTable(d.family_filing  || d.family_final, FAM_META);
-
-  // DV
-  document.getElementById('dvContent').innerHTML = buildDV(d);
-
-  // Lookup
+  renderGuide();
   runLookup();
+  applyTranslations();
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// Table builder
-// ═══════════════════════════════════════════════════════════════════════════
-function buildTable(table, metaMap) {
-  if (!table || !Object.keys(table).length)
-    return '<p style="padding:1rem;color:var(--text3)">No data available.</p>';
-
-  const ths = COUNTRY_LABELS.map(l => `<th>${l}</th>`).join('');
-  const rows = Object.entries(table).map(([cat, vals]) => {
-    const desc = metaMap[cat] || cat;
-    const cells = COUNTRY_KEYS.map(k => `<td>${pill(vals[k])}</td>`).join('');
+function buildTable(table, meta) {
+  if (!table||!Object.keys(table).length) return '<p style="padding:1rem;color:var(--text3)">—</p>';
+  const cl=countryLabels();
+  const ths=cl.map(l=>`<th>${l}</th>`).join('');
+  const rows=Object.entries(table).map(([cat,vals])=>{
+    const desc=meta[cat]||cat;
+    const cells=COUNTRY_KEYS.map(k=>`<td>${pill(vals[k])}</td>`).join('');
     return `<tr><td class="cat">${cat.replace(/_/g,' ')}</td><td class="desc">${desc}</td>${cells}</tr>`;
   }).join('');
-
-  return `<table>
-    <thead><tr><th>Category</th><th>Description</th>${ths}</tr></thead>
-    <tbody>${rows}</tbody>
-  </table>`;
+  return `<table><thead><tr><th>${t('col.category')}</th><th>${t('col.description')}</th>${ths}</tr></thead><tbody>${rows}</tbody></table>`;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// DV builder
-// ═══════════════════════════════════════════════════════════════════════════
 function buildDV(d) {
-  const renderTable = (dv, label) => {
-    if (!dv || !Object.keys(dv).length) return '';
-    const REGIONS = [
+  const renderTable=(dv,label)=>{
+    if(!dv||!Object.keys(dv).length) return '';
+    const REGIONS=[
       ['AFRICA','Africa'],['ASIA','Asia'],['EUROPE','Europe'],
-      ['NORTH_AMERICA','North America (Bahamas only)'],
+      ['NORTH_AMERICA','North America (Bahamas)'],
       ['OCEANIA','Oceania'],['SOUTH_AMERICA','South America & Caribbean'],
     ];
-    const rows = REGIONS.map(([k,name]) => {
-      const r = dv[k] || {};
-      const excs = Object.entries(r.exceptions||{}).map(([c,n])=>`${c}: ${n.toLocaleString()}`).join(' · ') || '—';
+    const rows=REGIONS.map(([k,name])=>{
+      const r=dv[k]||{};
+      const excs=Object.entries(r.exceptions||{}).map(([c,n])=>`${c}: ${n.toLocaleString()}`).join(' · ')||'—';
       return `<tr><td class="dv-region">${name}</td><td class="dv-cutoff">${(r.cutoff||0).toLocaleString()}</td><td class="dv-except">${excs}</td></tr>`;
     }).join('');
     return `<div class="dv-card"><div class="dv-card-head">${label}</div>
-      <table><thead><tr><th>Region</th><th>Rank cutoff</th><th>Country exceptions</th></tr></thead>
+      <table><thead><tr><th>${t('col.region')}</th><th>${t('col.rankCutoff')}</th><th>${t('col.exceptions')}</th></tr></thead>
       <tbody>${rows}</tbody></table></div>`;
   };
-
-  const nextLabel = (() => {
-    const m = currentData.meta;
-    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    let mo = m.month_num; let yr = m.year;
-    mo++; if (mo > 12) { mo = 1; yr++; }
-    return `${MONTHS[mo-1]} ${yr} — advance preview`;
-  })();
-
+  const m=d.meta;
+  let nm=m.month_num+1,ny=m.year; if(nm>12){nm=1;ny++;}
   return `<div class="dv-grid">
-    ${renderTable(d.dv_current, `${d.meta.month} ${d.meta.year} — current cutoffs`)}
-    ${renderTable(d.dv_next, nextLabel)}
+    ${renderTable(d.dv_current,t('dv.currentLabel',monthLabel(m.month_num,m.year),''))}
+    ${renderTable(d.dv_next,   t('dv.nextLabel',   monthLabel(nm,ny),''))}
   </div>`;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// Personal lookup
-// ═══════════════════════════════════════════════════════════════════════════
 function runLookup() {
   if (!currentData) return;
-  const cat     = document.getElementById('lcCat').value;
-  const country = document.getElementById('lcCountry').value;
-  const dateVal = document.getElementById('lcDate').value;
-  if (!dateVal) { document.getElementById('lookupResult').innerHTML = ''; return; }
-
-  const pd = new Date(dateVal + 'T00:00:00');
-  const d  = currentData;
-  const row = (d.employment_final||{})[cat] || (d.family_final||{})[cat];
-
+  const cat=document.getElementById('lcCat').value;
+  const country=document.getElementById('lcCountry').value;
+  const dateVal=document.getElementById('lcDate').value;
+  if (!dateVal) { document.getElementById('lookupResult').innerHTML=''; return; }
+  const pd=new Date(dateVal+'T00:00:00');
+  const row=(currentData.employment_final||{})[cat]||(currentData.family_final||{})[cat];
+  const cl=countryLabels();
+  const cLabel=cl[COUNTRY_KEYS.indexOf(country)]||country;
   if (!row) {
-    document.getElementById('lookupResult').innerHTML =
-      `<div class="result-banner waiting"><div class="rhead"><span class="badge waiting">No data</span><span class="rtitle">Category not found</span></div><div class="rsub">Please load a bulletin first using the scraper.</div></div>`;
+    document.getElementById('lookupResult').innerHTML=
+      `<div class="result-banner waiting"><div class="rhead"><span class="badge waiting">${t('result.unavail.badge')}</span><span class="rtitle">${t('result.nodata')}</span></div></div>`;
     return;
   }
-
-  const cutoffRaw = row[country] || row['ALL_OTHER'] || 'U';
-  const countryLabel = COUNTRY_LABELS[COUNTRY_KEYS.indexOf(country)] || country;
-
-  if (cutoffRaw === 'U') {
-    document.getElementById('lookupResult').innerHTML =
-      `<div class="result-banner unavail"><div class="rhead"><span class="badge unavail">Unavailable</span><span class="rtitle">No visa numbers this month</span></div><div class="rsub">Category ${cat} is not issuing visas for ${countryLabel} in ${d.meta.month} ${d.meta.year}.</div></div>`;
+  const raw=row[country]||row['ALL_OTHER']||'U';
+  const locale=lang==='vi'?'vi-VN':'en-US';
+  if (raw==='U') {
+    document.getElementById('lookupResult').innerHTML=
+      `<div class="result-banner unavail"><div class="rhead"><span class="badge unavail">${t('result.unavail.badge')}</span><span class="rtitle">${t('result.unavail.title')}</span></div>
+       <div class="rsub">${t('result.unavail.sub',cat,cLabel)}</div></div>`;
     return;
   }
-  if (cutoffRaw === 'C') {
-    document.getElementById('lookupResult').innerHTML =
-      `<div class="result-banner current"><div class="rhead"><span class="badge current">Current — no wait</span><span class="rtitle">You may proceed regardless of priority date</span></div><div class="rsub">Category ${cat} is current for ${countryLabel} in ${d.meta.month} ${d.meta.year}.</div><div class="rnote">Verify at <a href="https://www.uscis.gov/visabulletininfo" target="_blank">uscis.gov/visabulletininfo</a> whether to use the "dates for filing" chart for early I-485 submission.</div></div>`;
+  if (raw==='C') {
+    document.getElementById('lookupResult').innerHTML=
+      `<div class="result-banner current"><div class="rhead"><span class="badge current">${t('result.current.badge')}</span><span class="rtitle">${t('result.current.title')}</span></div>
+       <div class="rsub">${t('result.current.sub',cat,cLabel,t('pill.current'))}</div>
+       <div class="rnote">${t('result.current.note')}</div></div>`;
     return;
   }
-
-  const cutoff = new Date(cutoffRaw + 'T00:00:00');
-  const cutoffFmt = cutoff.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-  const pdFmt     = pd.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-  const diffDays  = Math.round((pd - cutoff) / 86400000);
-
-  if (pd < cutoff) {
-    const aheadMo = Math.round(-diffDays / 30.4);
-    document.getElementById('lookupResult').innerHTML =
-      `<div class="result-banner current">
-        <div class="rhead"><span class="badge current">Eligible this month</span><span class="rtitle">Your priority date is before the cutoff</span></div>
-        <div class="rsub">Cutoff for ${countryLabel}: <strong>${cutoffFmt}</strong>. Your date of <strong>${pdFmt}</strong> qualifies.</div>
-        <div class="rnote">You are ~${aheadMo} month${aheadMo!==1?'s':''} ahead of the current cutoff. Check <a href="https://www.uscis.gov/visabulletininfo" target="_blank">uscis.gov/visabulletininfo</a> for the "dates for filing" option.</div>
-      </div>`;
+  const cutoff=new Date(raw+'T00:00:00');
+  const cutoffFmt=cutoff.toLocaleDateString(locale,{year:'numeric',month:'long',day:'numeric'});
+  const pdFmt=pd.toLocaleDateString(locale,{year:'numeric',month:'long',day:'numeric'});
+  const diffDays=Math.round((pd-cutoff)/86400000);
+  if (pd<cutoff) {
+    document.getElementById('lookupResult').innerHTML=
+      `<div class="result-banner current"><div class="rhead"><span class="badge current">${t('result.current.badge')}</span><span class="rtitle">${t('result.current.title')}</span></div>
+       <div class="rsub">${t('result.current.sub',cat,cLabel,cutoffFmt)}</div>
+       <div class="rnote">${t('result.current.note')}</div></div>`;
   } else {
-    const behindMo = Math.round(diffDays / 30.4);
-    const behindYr = (diffDays / 365.25).toFixed(1);
-    document.getElementById('lookupResult').innerHTML =
-      `<div class="result-banner waiting">
-        <div class="rhead"><span class="badge waiting">Not yet current</span><span class="rtitle">Your priority date is behind the cutoff</span></div>
-        <div class="rsub">Cutoff for ${countryLabel}: <strong>${cutoffFmt}</strong>. Your date of <strong>${pdFmt}</strong> has not been reached.</div>
-        <div class="rnote">You are approximately <strong>${behindMo} months (${behindYr} yrs)</strong> behind the current cutoff. Monitor the bulletin monthly for movement. Dates can advance or retrogress.</div>
-      </div>`;
+    const mo=Math.round(diffDays/30.4), yr=(diffDays/365.25).toFixed(1);
+    document.getElementById('lookupResult').innerHTML=
+      `<div class="result-banner waiting"><div class="rhead"><span class="badge waiting">${t('result.waiting.badge')}</span><span class="rtitle">${t('result.waiting.title')}</span></div>
+       <div class="rsub">${t('result.waiting.sub',cutoffFmt,pdFmt)}</div>
+       <div class="rnote">${t('result.waiting.note',mo,yr)}</div></div>`;
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// History / trend view
-// ═══════════════════════════════════════════════════════════════════════════
 function renderHistory() {
-  const cat     = document.getElementById('hCat').value;
-  const country = document.getElementById('hCountry').value;
-  const el      = document.getElementById('historyChart');
-
-  // Gather data from all loaded bulletins
-  const points = [];
-  for (const [file, d] of Object.entries(allData)) {
-    const row = (d.employment_final||{})[cat] || (d.family_final||{})[cat];
-    if (!row) continue;
-    const val = row[country] || row['ALL_OTHER'];
-    const cutoffDate = (val && val !== 'C' && val !== 'U') ? new Date(val) : null;
-    points.push({
-      label: `${d.meta.month.slice(0,3)} ${d.meta.year}`,
-      bulletinDate: new Date(d.meta.year, d.meta.month_num - 1, 1),
-      cutoffDate,
-      raw: val,
-    });
-  }
-
-  points.sort((a,b) => a.bulletinDate - b.bulletinDate);
-
-  if (points.length === 0) {
-    el.innerHTML = `<p style="color:var(--text3);font-size:13px">No history data available yet. Fetch multiple months using the scraper to see trends.</p>
-    <pre style="font-size:11px;color:var(--text3);margin-top:.75rem">python scraper/scrape.py --backfill 12</pre>`;
-    return;
-  }
-
-  // Simple SVG sparkline + table
-  const tableRows = points.map(p => {
-    const dateStr = p.cutoffDate
-      ? p.cutoffDate.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'})
-      : p.raw || '—';
-    return `<tr><td>${p.label}</td><td>${pill(p.raw)}</td></tr>`;
-  }).join('');
-
-  el.innerHTML = `
-    <p style="font-size:12px;color:var(--text3);margin-bottom:.75rem">Showing final action date for <strong>${cat}</strong> — <strong>${COUNTRY_LABELS[COUNTRY_KEYS.indexOf(country)]}</strong> across ${points.length} bulletin(s).</p>
-    <table style="width:100%;border-collapse:collapse;font-size:12px">
-      <thead><tr style="background:var(--surface2)"><th style="padding:7px 12px;text-align:left;border-bottom:1px solid var(--border)">Bulletin</th><th style="padding:7px 12px;text-align:left;border-bottom:1px solid var(--border)">Cutoff date</th></tr></thead>
-      <tbody>${tableRows}</tbody>
+  const cat=document.getElementById('hCat').value;
+  const country=document.getElementById('hCountry').value;
+  const el=document.getElementById('historyChart');
+  const cl=countryLabels();
+  const cLabel=cl[COUNTRY_KEYS.indexOf(country)]||country;
+  const points=Object.entries(allData)
+    .map(([file,d])=>({
+      label:monthLabel(d.meta.month_num,d.meta.year),sortKey:file,
+      val:((d.employment_final||{})[cat]||(d.family_final||{})[cat]||{})[country]
+         ||((d.employment_final||{})[cat]||(d.family_final||{})[cat]||{})['ALL_OTHER'],
+    }))
+    .filter(p=>p.val).sort((a,b)=>a.sortKey.localeCompare(b.sortKey));
+  if (!points.length){el.innerHTML=`<p style="color:var(--text3);font-size:13px">${t('history.noData')}</p>`;return;}
+  const rows=points.map(p=>`<tr><td>${p.label}</td><td>${pill(p.val)}</td></tr>`).join('');
+  el.innerHTML=`
+    <p style="font-size:12px;color:var(--text3);margin-bottom:.75rem">${t('history.showing',cat,cLabel,points.length)}</p>
+    <table class="history-table">
+      <thead><tr><th>${t('col.bulletin')}</th><th>${t('col.cutoff')}</th></tr></thead>
+      <tbody>${rows}</tbody>
     </table>
-    <p style="font-size:11px;color:var(--text3);margin-top:.75rem">Tip: run <code>python scraper/scrape.py --backfill 24</code> to populate 2 years of history.</p>
-  `;
+    <p style="font-size:11px;color:var(--text3);margin-top:.75rem">${t('history.tip')}</p>`;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// Tab & subtab helpers
-// ═══════════════════════════════════════════════════════════════════════════
-function switchSubtab(group, which, btn) {
-  const map = { emp: ['emp-final','emp-filing'], fam: ['fam-final','fam-filing'] };
-  map[group].forEach(id => document.getElementById(id).classList.add('hidden'));
+function switchSubtab(group,which,btn){
+  const map={emp:['emp-final','emp-filing'],fam:['fam-final','fam-filing']};
+  map[group].forEach(id=>document.getElementById(id).classList.add('hidden'));
   document.getElementById(`${group}-${which}`).classList.remove('hidden');
-  btn.closest('.subtabs').querySelectorAll('.stab').forEach(s => s.classList.remove('active'));
+  btn.closest('.subtabs').querySelectorAll('.stab').forEach(s=>s.classList.remove('active'));
   btn.classList.add('active');
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// Pill helper
-// ═══════════════════════════════════════════════════════════════════════════
-function pill(val) {
-  if (!val || val === 'U') return `<span class="pill u">Unavailable</span>`;
-  if (val === 'C')         return `<span class="pill c">Current</span>`;
-  const dt = new Date(val + 'T00:00:00');
-  if (isNaN(dt)) return `<span class="pill d">${val}</span>`;
-  const ageYrs = (new Date() - dt) / (1000*60*60*24*365.25);
-  const fmt = dt.toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'});
-  const cls = ageYrs > 10 ? 'pill old' : ageYrs > 4 ? 'pill near' : 'pill d';
+function pill(val){
+  if(!val||val==='U') return `<span class="pill u">${t('pill.unavail')}</span>`;
+  if(val==='C')       return `<span class="pill c">${t('pill.current')}</span>`;
+  const dt=new Date(val+'T00:00:00');
+  if(isNaN(dt)) return `<span class="pill d">${val}</span>`;
+  const ageYrs=(new Date()-dt)/(1000*60*60*24*365.25);
+  const locale=lang==='vi'?'vi-VN':'en-US';
+  const fmt=dt.toLocaleDateString(locale,{year:'numeric',month:'short',day:'numeric'});
+  const cls=ageYrs>10?'pill old':ageYrs>4?'pill near':'pill d';
   return `<span class="${cls}">${fmt}</span>`;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// Utility
-// ═══════════════════════════════════════════════════════════════════════════
-function countCurrent(tbl) {
-  let cur = 0, tot = 0;
-  for (const row of Object.values(tbl||{}))
-    for (const v of Object.values(row)) { tot++; if (v==='C') cur++; }
-  return {cur, tot};
+function countCurrent(tbl){
+  let cur=0,tot=0;
+  for(const row of Object.values(tbl||{})) for(const v of Object.values(row)){tot++;if(v==='C')cur++;}
+  return{cur,tot};
 }
-
-function showLoading(msg) {
+function showLoading(msg){
   document.getElementById('loadingState').classList.remove('hidden');
-  document.getElementById('loadingMsg').textContent = msg;
+  document.getElementById('loadingMsg').textContent=msg;
   document.getElementById('errorState').classList.add('hidden');
   document.getElementById('dashboard').classList.add('hidden');
 }
-function hideLoading() {
-  document.getElementById('loadingState').classList.add('hidden');
-}
-function showError(msg) {
+function hideLoading(){ document.getElementById('loadingState').classList.add('hidden'); }
+function showError(msg){
   document.getElementById('loadingState').classList.add('hidden');
   document.getElementById('errorState').classList.remove('hidden');
-  document.getElementById('errorMsg').textContent = msg;
+  document.getElementById('errorMsg').textContent=msg;
 }
 </script>
 </body>
