@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT     = Path(__file__).parent
 DATA_DIR = ROOT / "data"
-HTML     = ROOT / "frontend" / "index.html"
+HTML     = ROOT / "index.html"
 
 def main():
     files = sorted(DATA_DIR.glob("????-??.json"), reverse=True)
