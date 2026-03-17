@@ -205,7 +205,7 @@ tbody tr:hover{background:var(--surface2);}
         <button class="lang-btn active" id="langVI" onclick="setLang('vi')">VI</button>
       </div>
       <select id="selMonth" onchange="loadBulletin()"></select>
-      <button class="compare-toggle" id="btnCompare" onclick="toggleCompare()" title="Show changes from previous month">Compare</button>
+      <button class="compare-toggle" id="btnCompare" onclick="toggleCompare()">Compare</button>
       <button class="btn btn-primary" id="btnRefresh" onclick="refreshBulletin()">
         <span class="dot" id="liveDot"></span>
         <span id="btnLabel" data-i18n="btn.fetch">Fetch latest</span>
@@ -443,6 +443,7 @@ const T = {
     'result.unavail.sub':(cat,country)=>`Category ${cat} is not issuing visas for ${country} this month.`,
     'result.nodata':'Load a bulletin first.',
     'pill.current':'Current','pill.unavail':'Unavailable',
+    'compare.noPrev':'No previous month data available for comparison.','compare.info':'Comparing with previous month — ↑ Advanced, ↓ Retrogressed','btn.compare':'Show changes from previous month',
     'error.noData':(label,yr,mo,url)=>`No local data for ${label}.\n\nRun the scraper:\n  python scraper/scrape.py --year ${yr} --month ${mo}\n\nOr open the live bulletin:\n  ${url}`,
     'footer.text':'Data from','footer.disclaimer':'Not legal advice — consult an immigration attorney',
     'meta.scraped':'Scraped',
@@ -512,6 +513,7 @@ const T = {
     'result.unavail.sub':(cat,country)=>`Danh mục ${cat} không cấp thị thực cho ${country} tháng này.`,
     'result.nodata':'Vui lòng tải bản tin trước.',
     'pill.current':'Hiện tại','pill.unavail':'Không có',
+    'compare.noPrev':'Không có dữ liệu tháng trước để so sánh.','compare.info':'So sánh với tháng trước — ↑ Tiến, ↓ Lùi','btn.compare':'Hiển thị sự thay đổi so với tháng trước',
     'error.noData':(label,yr,mo,url)=>`Không có dữ liệu cho ${label}.\n\nChạy trình thu thập:\n  python scraper/scrape.py --year ${yr} --month ${mo}\n\nHoặc mở bản tin trực tiếp:\n  ${url}`,
     'footer.text':'Dữ liệu từ','footer.disclaimer':'Không phải tư vấn pháp lý — hãy tham khảo luật sư nhập cư',
     'meta.scraped':'Đã thu thập',
@@ -560,6 +562,8 @@ function applyTranslations() {
   document.querySelectorAll('#selMonth option').forEach(opt => {
     if (opt.dataset.month) opt.textContent = monthLabel(+opt.dataset.month, +opt.dataset.year);
   });
+  // Update compare button title
+  document.getElementById('btnCompare').title = t('btn.compare');
   renderGuide();
 }
 
@@ -767,7 +771,7 @@ function render() {
 
   document.getElementById('adminNotices').innerHTML=(d.admin_notices||[]).map(n=>
     `<div class="notice admin"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg><span>${n}</span></div>`
-  ).join('')+(compareMode&&getPreviousMonthData()?`<div class="notice compare"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 10V8h3V5l4 4-4 4v-3h-3zm0 2v3h3v3l4-4-4-4v3h-3z"/></svg><span>Comparing with previous month — ↑ Advanced, ↓ Retrogressed</span></div>`:'');
+  ).join('')+(compareMode&&getPreviousMonthData()?`<div class="notice compare"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 10V8h3V5l4 4-4 4v-3h-3zm0 2v3h3v3l4-4-4-4v3h-3z"/></svg><span>${t('compare.info')}</span></div>`:'');
 
   const ec=countCurrent(d.employment_final), fc=countCurrent(d.family_final);
   document.getElementById('statsStrip').innerHTML=`
@@ -809,7 +813,7 @@ function toggleCompare() {
   if (compareMode) {
     const prevData = getPreviousMonthData();
     if (!prevData) {
-      alert('No previous month data available for comparison.');
+      alert(t('compare.noPrev'));
       compareMode = false;
       btn.classList.remove('active');
       return;
