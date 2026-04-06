@@ -231,6 +231,7 @@ tbody tr:hover{background:var(--surface2);}
       <button class="tab"        data-tab="dv"         data-i18n="tab.dv">Diversity lottery</button>
       <button class="tab"        data-tab="history"    data-i18n="tab.history">Trend history</button>
       <button class="tab"        data-tab="guide"      data-i18n="tab.guide">How it works</button>
+      <button class="tab"        data-tab="cspa"       data-i18n="tab.cspa">CSPA Calculator</button>
     </nav>
 
     <!-- LOOKUP -->
@@ -372,6 +373,40 @@ tbody tr:hover{background:var(--surface2);}
       <div class="guide-grid" id="guideGrid"></div>
     </section>
 
+    <!-- CSPA -->
+    <section id="tab-cspa" class="hidden">
+      <p class="section-sub" data-i18n="cspa.sub">
+        The Child Status Protection Act (CSPA), signed into law on August 6, 2002, protects children from "aging out" of immigrant visa eligibility when government processing delays cause them to turn 21.
+      </p>
+      <div class="guide-grid" id="cspaGuideGrid" style="margin-bottom:1.5rem"></div>
+      <div class="lookup-card">
+        <p class="section-title" data-i18n="cspa.calc.title">Calculate CSPA Age</p>
+        <div class="fields-row">
+          <div class="field">
+            <label data-i18n="cspa.input.dob">Child's date of birth</label>
+            <input type="date" id="cspaDob" onchange="calculateCSPA()"/>
+          </div>
+          <div class="field">
+            <label data-i18n="cspa.input.visaDate">Date visa became available</label>
+            <input type="date" id="cspaVisaDate" onchange="calculateCSPA()"/>
+          </div>
+          <div class="field">
+            <label data-i18n="cspa.input.filingDate">Petition filing date (I-130 / I-140)</label>
+            <input type="date" id="cspaFilingDate" onchange="calculateCSPA()"/>
+          </div>
+          <div class="field">
+            <label data-i18n="cspa.input.approvalDate">Petition approval date (I-130 / I-140)</label>
+            <input type="date" id="cspaApprovalDate" onchange="calculateCSPA()"/>
+          </div>
+        </div>
+        <div id="cspaResult"></div>
+      </div>
+      <div class="notice warn mt1">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+        <span data-i18n="cspa.disclaimer">This calculator provides an estimate only. CSPA rules vary by visa category and individual circumstances. Always consult a licensed immigration attorney before taking any action.</span>
+      </div>
+    </section>
+
     <div id="adminNotices"></div>
 
   </div><!-- /dashboard -->
@@ -457,6 +492,34 @@ const T = {
       {color:'green', title:'EB-5 set-asides',body:'EB-5 reserves 20% for rural investments, 10% for high-unemployment areas, 2% for infrastructure. All three are currently "Current" for every country including China and India.'},
       {color:'amber', title:'Annual limits (FY2026)',body:'Family-sponsored: 226,000/year\nEmployment-based: 140,000+/year\nPer-country cap: 7% ≈ 25,620\nDiversity visas: ~52,000/year'},
     ],
+    'tab.cspa':'CSPA Calculator',
+    'cspa.sub':'The Child Status Protection Act (CSPA), signed into law on August 6, 2002, protects children from "aging out" of immigrant visa eligibility when government processing delays cause them to turn 21. Use this calculator to estimate a child\'s CSPA age.',
+    'cspa.calc.title':'Calculate CSPA Age',
+    'cspa.input.dob':"Child's date of birth",
+    'cspa.input.visaDate':'Date visa became available',
+    'cspa.input.filingDate':'Petition filing date (I-130 / I-140)',
+    'cspa.input.approvalDate':'Petition approval date (I-130 / I-140)',
+    'cspa.result.ageAtVisa':'Age at visa availability',
+    'cspa.result.pending':'Petition pending time',
+    'cspa.result.cspaAge':'CSPA age',
+    'cspa.result.deadline':'1-year seek-to-acquire deadline',
+    'cspa.result.qualifies.badge':'May qualify under CSPA',
+    'cspa.result.qualifies.title':'CSPA age is under 21',
+    'cspa.result.qualifies.sub':(age)=>`CSPA age: ${age}. The child may still be eligible as a "child" for immigration purposes.`,
+    'cspa.result.qualifies.note':(deadline)=>`The child must "seek to acquire" the immigrant visa (file I-485 or DS-260) within 1 year of the visa availability date. Deadline: ${deadline}.`,
+    'cspa.result.notqualifies.badge':'Does not qualify under CSPA',
+    'cspa.result.notqualifies.title':'CSPA age is 21 or older',
+    'cspa.result.notqualifies.sub':(age)=>`CSPA age: ${age}. The child may have "aged out" and may no longer be eligible as a "child."`,
+    'cspa.result.notqualifies.note':'Consult an immigration attorney. Even when a child ages out, they may still qualify under F2B or other adult-child categories.',
+    'cspa.result.incomplete':'Please fill in all four dates above to calculate.',
+    'cspa.disclaimer':'This calculator provides an estimate only. CSPA rules vary by visa category and individual circumstances. Always consult a licensed immigration attorney before taking any action.',
+    'cspa.guide':[
+      {color:'',      title:'What is CSPA?',body:'The Child Status Protection Act (CSPA) protects children from "aging out" of immigrant visa eligibility due to government processing delays. Enacted August 6, 2002, it allows a child to use a reduced "CSPA age" instead of their biological age.'},
+      {color:'green', title:'CSPA Age Formula',body:'CSPA Age = (Child\'s age when visa became available) − (Time petition was pending)\n\nPending time = petition approval date − petition filing date\nAge at availability = visa availability date − child\'s date of birth\n\nIf the CSPA age is under 21, the child may still qualify.'},
+      {color:'amber', title:'"Seek to Acquire" Requirement',body:'To benefit from CSPA, the child must take steps to "seek to acquire" the immigrant visa (file Form I-485 for adjustment of status, or DS-260 for consular processing) within 1 year of the date the visa became available. Missing this deadline may forfeit the CSPA protection.'},
+      {color:'red',   title:'Important Limitations',body:'CSPA does NOT apply to K visas, V visas, or asylum/refugee cases. For employment-based cases, the I-140 must be approved before the child turns 21. Each visa category has specific CSPA rules — consult an immigration attorney for your situation.'},
+      {color:'purple',title:'Date Visa Became Available',body:'This is the date your priority date first became "Current" in the Visa Bulletin. For adjustment of status (I-485), it is the date your category first appeared as current in the final action dates or dates for filing chart (whichever USCIS permits).'},
+    ],
   },
   vi: {
     'brand.title':'Bảng Tin Thị Thực',
@@ -527,6 +590,34 @@ const T = {
       {color:'green', title:'Suất dành riêng EB-5',body:'EB-5 dành 20% cho nông thôn, 10% cho thất nghiệp cao, 2% cho hạ tầng. Cả ba đang "Hiện tại" cho mọi quốc gia kể cả Trung Quốc và Ấn Độ.'},
       {color:'amber', title:'Hạn ngạch hàng năm (NTC 2026)',body:'Bảo lãnh gia đình: 226.000/năm\nDựa trên việc làm: 140.000+/năm\nHạn ngạch theo quốc gia: 7% ≈ 25.620\nThị thực đa dạng: ~52.000/năm'},
     ],
+    'tab.cspa':'Máy Tính CSPA',
+    'cspa.sub':'Đạo luật Bảo vệ Tình trạng Trẻ em (CSPA), được ký thành luật ngày 6/8/2002, bảo vệ trẻ em không bị "vượt quá tuổi" (quá 21 tuổi) do chậm trễ xử lý của chính phủ. Dùng máy tính này để ước tính tuổi CSPA của trẻ.',
+    'cspa.calc.title':'Tính Tuổi CSPA',
+    'cspa.input.dob':'Ngày sinh của trẻ',
+    'cspa.input.visaDate':'Ngày thị thực có hiệu lực',
+    'cspa.input.filingDate':'Ngày nộp đơn thỉnh cầu (I-130 / I-140)',
+    'cspa.input.approvalDate':'Ngày phê duyệt đơn thỉnh cầu (I-130 / I-140)',
+    'cspa.result.ageAtVisa':'Tuổi khi thị thực có hiệu lực',
+    'cspa.result.pending':'Thời gian chờ xử lý đơn',
+    'cspa.result.cspaAge':'Tuổi CSPA',
+    'cspa.result.deadline':'Hạn chót 1 năm để nộp đơn',
+    'cspa.result.qualifies.badge':'Có thể đủ điều kiện theo CSPA',
+    'cspa.result.qualifies.title':'Tuổi CSPA dưới 21',
+    'cspa.result.qualifies.sub':(age)=>`Tuổi CSPA: ${age}. Trẻ có thể vẫn đủ điều kiện là "trẻ em" theo mục đích nhập cư.`,
+    'cspa.result.qualifies.note':(deadline)=>`Trẻ phải "tìm cách có được" thị thực nhập cư (nộp I-485 hoặc DS-260) trong vòng 1 năm kể từ ngày thị thực có hiệu lực. Hạn chót: ${deadline}.`,
+    'cspa.result.notqualifies.badge':'Không đủ điều kiện theo CSPA',
+    'cspa.result.notqualifies.title':'Tuổi CSPA từ 21 trở lên',
+    'cspa.result.notqualifies.sub':(age)=>`Tuổi CSPA: ${age}. Trẻ có thể đã "vượt quá tuổi" và không còn đủ điều kiện là "trẻ em."`,
+    'cspa.result.notqualifies.note':'Tham khảo luật sư nhập cư. Khi trẻ vượt quá tuổi, vẫn có thể đủ điều kiện theo diện F2B hoặc các diện con trưởng thành khác.',
+    'cspa.result.incomplete':'Vui lòng điền đầy đủ bốn ngày ở trên để tính toán.',
+    'cspa.disclaimer':'Máy tính này chỉ cung cấp ước tính. Quy tắc CSPA thay đổi theo loại thị thực và hoàn cảnh cụ thể. Luôn tham khảo luật sư nhập cư có giấy phép trước khi hành động.',
+    'cspa.guide':[
+      {color:'',      title:'CSPA là gì?',body:'Đạo luật Bảo vệ Tình trạng Trẻ em (CSPA) bảo vệ trẻ em không bị "vượt quá tuổi" (21 tuổi) do chậm trễ xử lý của chính phủ. Ban hành ngày 6/8/2002, cho phép trẻ dùng "tuổi CSPA" thay vì tuổi thực.'},
+      {color:'green', title:'Công Thức Tuổi CSPA',body:'Tuổi CSPA = (Tuổi của trẻ khi thị thực có hiệu lực) − (Thời gian chờ xử lý đơn)\n\nThời gian chờ = Ngày phê duyệt − Ngày nộp đơn I-130/I-140\nTuổi khi có hiệu lực = Ngày thị thực có hiệu lực − Ngày sinh\n\nNếu tuổi CSPA dưới 21, trẻ có thể vẫn đủ điều kiện.'},
+      {color:'amber', title:'Yêu Cầu "Tìm Cách Có Được"',body:'Để được hưởng lợi từ CSPA, trẻ phải thực hiện bước "tìm cách có được" thị thực nhập cư (nộp I-485 hoặc DS-260) trong vòng 1 năm kể từ ngày thị thực có hiệu lực. Bỏ lỡ hạn này có thể mất quyền lợi CSPA.'},
+      {color:'red',   title:'Hạn Chế Quan Trọng',body:'CSPA KHÔNG áp dụng cho thị thực K, thị thực V, hay trường hợp tị nạn. Trường hợp việc làm cần có I-140 được phê duyệt trước khi trẻ đủ 21 tuổi. Mỗi loại thị thực có quy tắc CSPA riêng — tham khảo luật sư nhập cư.'},
+      {color:'purple',title:'Ngày Thị Thực Có Hiệu Lực',body:'Đây là ngày ngày ưu tiên của bạn lần đầu tiên "hiện tại" trong Bản tin Thị thực. Đối với điều chỉnh tình trạng (I-485), đây là ngày danh mục của bạn trở thành hiện tại trong biểu đồ ngày hành động cuối cùng hoặc ngày nộp (tùy USCIS cho phép).'},
+    ],
   },
 };
 
@@ -565,6 +656,8 @@ function applyTranslations() {
   // Update compare button title
   document.getElementById('btnCompare').title = t('btn.compare');
   renderGuide();
+  renderCSPAGuide();
+  calculateCSPA();
 }
 
 function renderGuide() {
@@ -976,6 +1069,106 @@ function showError(msg){
   document.getElementById('loadingState').classList.add('hidden');
   document.getElementById('errorState').classList.remove('hidden');
   document.getElementById('errorMsg').textContent=msg;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CSPA calculator
+// ═══════════════════════════════════════════════════════════════════════════
+function renderCSPAGuide() {
+  const guides = T[lang]['cspa.guide'] || T['en']['cspa.guide'];
+  const el = document.getElementById('cspaGuideGrid');
+  if (el) el.innerHTML = guides.map(g =>
+    `<div class="guide-card ${g.color}"><h4>${g.title}</h4><p>${g.body.replace(/\n/g,'<br>')}</p></div>`
+  ).join('');
+}
+
+function cspaFormatDuration(totalDays) {
+  const d = Math.abs(totalDays);
+  const y  = Math.floor(d / 365.25);
+  const rem = d - y * 365.25;
+  const mo = Math.floor(rem / 30.4375);
+  const dy = Math.round(rem - mo * 30.4375);
+  const isVI = lang === 'vi';
+  const parts = [];
+  if (y  > 0) parts.push(isVI ? `${y} năm`   : `${y} yr${y!==1?'s':''}`);
+  if (mo > 0) parts.push(isVI ? `${mo} tháng` : `${mo} mo`);
+  if (dy > 0 || parts.length === 0) parts.push(isVI ? `${dy} ngày` : `${dy} day${dy!==1?'s':''}`);
+  return parts.join(', ');
+}
+
+function calculateCSPA() {
+  const dob          = document.getElementById('cspaDob').value;
+  const visaDate     = document.getElementById('cspaVisaDate').value;
+  const filingDate   = document.getElementById('cspaFilingDate').value;
+  const approvalDate = document.getElementById('cspaApprovalDate').value;
+  const el = document.getElementById('cspaResult');
+  if (!el) return;
+
+  if (!dob || !visaDate || !filingDate || !approvalDate) {
+    el.innerHTML = (!dob && !visaDate && !filingDate && !approvalDate)
+      ? ''
+      : `<p class="section-sub" style="margin-top:1rem">${t('cspa.result.incomplete')}</p>`;
+    return;
+  }
+
+  const MS = 1000 * 60 * 60 * 24;
+  const dobMs      = new Date(dob          + 'T00:00:00').getTime();
+  const visaMs     = new Date(visaDate     + 'T00:00:00').getTime();
+  const filingMs   = new Date(filingDate   + 'T00:00:00').getTime();
+  const approvalMs = new Date(approvalDate + 'T00:00:00').getTime();
+
+  const ageAtVisaDays = (visaMs  - dobMs)      / MS;
+  const pendingDays   = Math.max(0, (approvalMs - filingMs) / MS);
+  const cspaAgeDays   = ageAtVisaDays - pendingDays;
+  const cspaAgeYears  = cspaAgeDays / 365.25;
+
+  const qualifies = cspaAgeYears < 21;
+  const cls       = qualifies ? 'current' : 'unavail';
+
+  const ageAtVisaFmt = cspaFormatDuration(ageAtVisaDays);
+  const pendingFmt   = cspaFormatDuration(pendingDays);
+  const cspaAgeFmt   = cspaAgeDays > 0 ? cspaFormatDuration(cspaAgeDays) : (lang==='vi' ? '0 ngày' : '0 days');
+
+  const cspaY  = Math.floor(Math.abs(cspaAgeYears));
+  const cspaMo = Math.round((Math.abs(cspaAgeYears) - cspaY) * 12);
+  const cspaAgeShort = lang==='vi' ? `${cspaY} tuổi ${cspaMo} tháng` : `${cspaY} yrs ${cspaMo} mo`;
+
+  const deadline    = new Date(visaMs + 365 * MS);
+  const locale      = lang==='vi' ? 'vi-VN' : 'en-US';
+  const deadlineFmt = deadline.toLocaleDateString(locale, {year:'numeric', month:'long', day:'numeric'});
+
+  const badge = t(qualifies ? 'cspa.result.qualifies.badge'    : 'cspa.result.notqualifies.badge');
+  const title = t(qualifies ? 'cspa.result.qualifies.title'    : 'cspa.result.notqualifies.title');
+  const sub   = t(qualifies ? 'cspa.result.qualifies.sub'      : 'cspa.result.notqualifies.sub',   cspaAgeShort);
+  const note  = t(qualifies ? 'cspa.result.qualifies.note'     : 'cspa.result.notqualifies.note',  deadlineFmt);
+
+  el.innerHTML = `
+    <div class="result-banner ${cls}" style="margin-top:1.25rem">
+      <div class="rhead"><span class="badge ${cls}">${badge}</span></div>
+      <div class="rtitle">${title}</div>
+      <div class="rsub">${sub}</div>
+      <div class="rnote">
+        <table style="font-size:12px;border-collapse:collapse;width:100%">
+          <tr>
+            <td style="padding:3px 8px 3px 0;color:var(--text2);white-space:nowrap">${t('cspa.result.ageAtVisa')}:</td>
+            <td style="padding:3px 0;font-weight:600">${ageAtVisaFmt}</td>
+          </tr>
+          <tr>
+            <td style="padding:3px 8px 3px 0;color:var(--text2);white-space:nowrap">${t('cspa.result.pending')}:</td>
+            <td style="padding:3px 0;font-weight:600">− ${pendingFmt}</td>
+          </tr>
+          <tr style="border-top:1px solid var(--border)">
+            <td style="padding:6px 8px 3px 0;color:var(--text2);white-space:nowrap;font-weight:600">${t('cspa.result.cspaAge')}:</td>
+            <td style="padding:6px 0;font-weight:700;font-size:14px">${cspaAgeFmt}</td>
+          </tr>
+          <tr>
+            <td style="padding:3px 8px 3px 0;color:var(--text2);white-space:nowrap">${t('cspa.result.deadline')}:</td>
+            <td style="padding:3px 0;font-weight:600">${deadlineFmt}</td>
+          </tr>
+        </table>
+        <div style="margin-top:8px">${note}</div>
+      </div>
+    </div>`;
 }
 </script>
 </body>
