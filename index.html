@@ -1083,11 +1083,11 @@ function renderCSPAGuide() {
 }
 
 function cspaFormatDuration(totalDays) {
-  const d = Math.abs(totalDays);
-  const y  = Math.floor(d / 365.25);
-  const rem = d - y * 365.25;
-  const mo = Math.floor(rem / 30.4375);
-  const dy = Math.round(rem - mo * 30.4375);
+  const d = Math.abs(Math.round(totalDays));
+  const y  = Math.floor(d / 365);
+  const rem = d - y * 365;
+  const mo = Math.floor(rem / 30);
+  const dy = rem - mo * 30;
   const isVI = lang === 'vi';
   const parts = [];
   if (y  > 0) parts.push(isVI ? `${y} năm`   : `${y} yr${y!==1?'s':''}`);
@@ -1118,7 +1118,16 @@ function calculateCSPA() {
   const approvalMs = new Date(approvalDate + 'T00:00:00').getTime();
 
   const ageAtVisaDays = (visaMs  - dobMs)      / MS;
-  const pendingDays   = Math.max(0, (approvalMs - filingMs) / MS);
+  const pendingDays   = (approvalMs - filingMs) / MS;
+
+  if (pendingDays < 0) {
+    const msg = lang==='vi'
+      ? 'Ngày phê duyệt phải sau ngày nộp đơn. Vui lòng kiểm tra lại.'
+      : 'Approval date must be on or after the filing date. Please check your dates.';
+    el.innerHTML = `<p class="section-sub" style="margin-top:1rem;color:var(--red)">${msg}</p>`;
+    return;
+  }
+
   const cspaAgeDays   = ageAtVisaDays - pendingDays;
   const cspaAgeYears  = cspaAgeDays / 365.25;
 
@@ -1127,13 +1136,14 @@ function calculateCSPA() {
 
   const ageAtVisaFmt = cspaFormatDuration(ageAtVisaDays);
   const pendingFmt   = cspaFormatDuration(pendingDays);
-  const cspaAgeFmt   = cspaAgeDays > 0 ? cspaFormatDuration(cspaAgeDays) : (lang==='vi' ? '0 ngày' : '0 days');
+  const cspaAgeFmt   = cspaFormatDuration(cspaAgeDays);
 
   const cspaY  = Math.floor(Math.abs(cspaAgeYears));
   const cspaMo = Math.round((Math.abs(cspaAgeYears) - cspaY) * 12);
   const cspaAgeShort = lang==='vi' ? `${cspaY} tuổi ${cspaMo} tháng` : `${cspaY} yrs ${cspaMo} mo`;
 
-  const deadline    = new Date(visaMs + 365 * MS);
+  const deadline = new Date(visaDate + 'T00:00:00');
+  deadline.setFullYear(deadline.getFullYear() + 1);
   const locale      = lang==='vi' ? 'vi-VN' : 'en-US';
   const deadlineFmt = deadline.toLocaleDateString(locale, {year:'numeric', month:'long', day:'numeric'});
 
