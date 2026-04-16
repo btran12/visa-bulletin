@@ -1,0 +1,275 @@
+{
+  "meta": {
+    "title": "Visa Bulletin For May 2026",
+    "month": "May",
+    "month_num": 5,
+    "year": 2026,
+    "volume": "",
+    "number": "",
+    "published": "April 2, 2026",
+    "url": "https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin/2026/visa-bulletin-for-may-2026.html",
+    "scraped_at": "2026-04-16T17:45:42.576252+00:00"
+  },
+  "employment_final": {
+    "EB1": {
+      "ALL_OTHER": "C",
+      "CHINA": "2023-04-01",
+      "INDIA": "2023-04-01",
+      "MEXICO": "C",
+      "PHILIPPINES": "C"
+    },
+    "EB2": {
+      "ALL_OTHER": "C",
+      "CHINA": "2021-09-01",
+      "INDIA": "2014-07-15",
+      "MEXICO": "C",
+      "PHILIPPINES": "C"
+    },
+    "EB3": {
+      "ALL_OTHER": "2024-06-01",
+      "CHINA": "2021-06-15",
+      "INDIA": "2013-11-15",
+      "MEXICO": "2024-06-01",
+      "PHILIPPINES": "2023-08-01"
+    },
+    "EB3_OTHER": {
+      "ALL_OTHER": "2022-02-01",
+      "CHINA": "2019-02-01",
+      "INDIA": "2013-11-15",
+      "MEXICO": "2022-02-01",
+      "PHILIPPINES": "2021-11-01"
+    },
+    "EB4": {
+      "ALL_OTHER": "2022-07-15",
+      "CHINA": "2022-07-15",
+      "INDIA": "2022-07-15",
+      "MEXICO": "2022-07-15",
+      "PHILIPPINES": "2022-07-15"
+    },
+    "EB4_RELIGIOUS": {
+      "ALL_OTHER": "2022-07-15",
+      "CHINA": "2022-07-15",
+      "INDIA": "2022-07-15",
+      "MEXICO": "2022-07-15",
+      "PHILIPPINES": "2022-07-15"
+    },
+    "EB5_UNRESERVED": {
+      "ALL_OTHER": "C",
+      "CHINA": "2016-09-22",
+      "INDIA": "2022-05-01",
+      "MEXICO": "C",
+      "PHILIPPINES": "C"
+    },
+    "EB5_RURAL": {
+      "ALL_OTHER": "C",
+      "CHINA": "C",
+      "INDIA": "C",
+      "MEXICO": "C",
+      "PHILIPPINES": "C"
+    },
+    "EB5_INFRA": {
+      "ALL_OTHER": "C",
+      "CHINA": "C",
+      "INDIA": "C",
+      "MEXICO": "C",
+      "PHILIPPINES": "C"
+    }
+  },
+  "employment_filing": {
+    "EB1": {
+      "ALL_OTHER": "C",
+      "CHINA": "2023-12-01",
+      "INDIA": "2023-12-01",
+      "MEXICO": "C",
+      "PHILIPPINES": "C"
+    },
+    "EB2": {
+      "ALL_OTHER": "C",
+      "CHINA": "2022-01-01",
+      "INDIA": "2015-01-15",
+      "MEXICO": "C",
+      "PHILIPPINES": "C"
+    },
+    "EB3": {
+      "ALL_OTHER": "C",
+      "CHINA": "2022-01-01",
+      "INDIA": "2015-01-15",
+      "MEXICO": "C",
+      "PHILIPPINES": "2024-01-01"
+    },
+    "EB3_OTHER": {
+      "ALL_OTHER": "2022-08-01",
+      "CHINA": "2019-10-01",
+      "INDIA": "2015-01-15",
+      "MEXICO": "2022-08-01",
+      "PHILIPPINES": "2022-08-01"
+    },
+    "EB4": {
+      "ALL_OTHER": "2023-01-01",
+      "CHINA": "2023-01-01",
+      "INDIA": "2023-01-01",
+      "MEXICO": "2023-01-01",
+      "PHILIPPINES": "2023-01-01"
+    },
+    "EB4_RELIGIOUS": {
+      "ALL_OTHER": "2023-01-01",
+      "CHINA": "2023-01-01",
+      "INDIA": "2023-01-01",
+      "MEXICO": "2023-01-01",
+      "PHILIPPINES": "2023-01-01"
+    },
+    "EB5_UNRESERVED": {
+      "ALL_OTHER": "C",
+      "CHINA": "2017-03-01",
+      "INDIA": "2024-05-01",
+      "MEXICO": "C",
+      "PHILIPPINES": "C"
+    },
+    "EB5_RURAL": {
+      "ALL_OTHER": "C",
+      "CHINA": "C",
+      "INDIA": "C",
+      "MEXICO": "C",
+      "PHILIPPINES": "C"
+    },
+    "EB5_INFRA": {
+      "ALL_OTHER": "C",
+      "CHINA": "C",
+      "INDIA": "C",
+      "MEXICO": "C",
+      "PHILIPPINES": "C"
+    }
+  },
+  "family_final": {
+    "F1": {
+      "ALL_OTHER": "2017-09-01",
+      "CHINA": "2017-09-01",
+      "INDIA": "2017-09-01",
+      "MEXICO": "2007-08-15",
+      "PHILIPPINES": "2013-05-01"
+    },
+    "F2A": {
+      "ALL_OTHER": "2024-08-01",
+      "CHINA": "2024-08-01",
+      "INDIA": "2024-08-01",
+      "MEXICO": "2023-08-01",
+      "PHILIPPINES": "2024-08-01"
+    },
+    "F2B": {
+      "ALL_OTHER": "2017-05-22",
+      "CHINA": "2017-05-22",
+      "INDIA": "2017-05-22",
+      "MEXICO": "2009-02-15",
+      "PHILIPPINES": "2013-04-08"
+    },
+    "F3": {
+      "ALL_OTHER": "2012-02-15",
+      "CHINA": "2012-02-15",
+      "INDIA": "2012-02-15",
+      "MEXICO": "2001-05-01",
+      "PHILIPPINES": "2005-11-22"
+    },
+    "F4": {
+      "ALL_OTHER": "2008-09-15",
+      "CHINA": "2008-09-15",
+      "INDIA": "2006-11-01",
+      "MEXICO": "2001-04-08",
+      "PHILIPPINES": "2007-07-15"
+    }
+  },
+  "family_filing": {
+    "F1": {
+      "ALL_OTHER": "2018-10-01",
+      "CHINA": "2018-10-01",
+      "INDIA": "2018-10-01",
+      "MEXICO": "2008-10-01",
+      "PHILIPPINES": "2015-04-22"
+    },
+    "F2A": {
+      "ALL_OTHER": "C",
+      "CHINA": "C",
+      "INDIA": "C",
+      "MEXICO": "C",
+      "PHILIPPINES": "C"
+    },
+    "F2B": {
+      "ALL_OTHER": "2018-01-01",
+      "CHINA": "2018-01-01",
+      "INDIA": "2018-01-01",
+      "MEXICO": "2010-05-15",
+      "PHILIPPINES": "2013-10-01"
+    },
+    "F3": {
+      "ALL_OTHER": "2012-12-08",
+      "CHINA": "2012-12-08",
+      "INDIA": "2012-12-08",
+      "MEXICO": "2001-07-15",
+      "PHILIPPINES": "2006-08-08"
+    },
+    "F4": {
+      "ALL_OTHER": "2009-09-01",
+      "CHINA": "2009-09-01",
+      "INDIA": "2006-12-15",
+      "MEXICO": "2001-04-30",
+      "PHILIPPINES": "2008-03-22"
+    }
+  },
+  "dv_current": {
+    "AFRICA": {
+      "cutoff": 55000,
+      "exceptions": {}
+    },
+    "ASIA": {
+      "cutoff": 35000,
+      "exceptions": {}
+    },
+    "EUROPE": {
+      "cutoff": 20000,
+      "exceptions": {}
+    },
+    "NORTH_AMERICA": {
+      "cutoff": 50,
+      "exceptions": {}
+    },
+    "OCEANIA": {
+      "cutoff": 1500,
+      "exceptions": {}
+    },
+    "SOUTH_AMERICA": {
+      "cutoff": 3000,
+      "exceptions": {}
+    }
+  },
+  "dv_next": {
+    "AFRICA": {
+      "cutoff": 55000,
+      "exceptions": {}
+    },
+    "ASIA": {
+      "cutoff": 35000,
+      "exceptions": {}
+    },
+    "EUROPE": {
+      "cutoff": 20000,
+      "exceptions": {}
+    },
+    "NORTH_AMERICA": {
+      "cutoff": 50,
+      "exceptions": {}
+    },
+    "OCEANIA": {
+      "cutoff": 1500,
+      "exceptions": {}
+    },
+    "SOUTH_AMERICA": {
+      "cutoff": 3000,
+      "exceptions": {}
+    }
+  },
+  "admin_notices": [
+    "D. AVAILABILITY OF FAMILY-SPONSORED AND EMPLOYMENT-BASED VISAS",
+    "E. VISA AVAILABILITY IN THE EMPLOYMENT-BASED FIFTH PREFERENCE (EB-5) UNRESERVED CATEGORIES FOR INDIA",
+    "F. U.S. GOVERNMENT EMPLOYEE SPECIAL IMMIGRANT VISAS (SIVs)",
+    "F. FOR THE LATEST INFORMATION ON VISA PROCESSING AT U.S. EMBASSIES AND CONSULATES, PLEASE VISIT THE BUREAU OF CONSULAR AFFAIRS WEBSITE AT TRAVEL.STATE.GOV"
+  ]
+}
